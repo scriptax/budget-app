@@ -1,0 +1,26 @@
+@font-face {
+  font-family: "Overpass";
+  src: url(../../assets/fonts/Overpass.ttf) format('truetype');
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+  .scrollbar::-webkit-scrollbar {
+    width: 7px;
+  }
+
+  .scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .scrollbar::-webkit-scrollbar-thumb {
+    background: rgb(186, 255, 208);
+  }
+
+  .scrollbar::-webkit-scrollbar-thumb:hover {
+    background: rgb(159, 255, 194);
+  }
+}
