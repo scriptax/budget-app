@@ -1,14 +1,14 @@
-const crypto =  require("crypto");
-const { promisify } = require('util');
+const crypto = require("crypto");
+const { promisify } = require("util");
 const jwt = require("jsonwebtoken");
 
-const User = require("./../models/userModel")
-const catchAsync = require('./../utils/catchAsync');
-const CustomError = require('../utils/customError');
+const User = require("./../models/userModel");
+const catchAsync = require("./../utils/catchAsync");
+const CustomError = require("../utils/customError");
 
-const signToken = id => {
+const signToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
-    expiresIn: process.env.JWT_EXPIRES_IN
+    expiresIn: process.env.JWT_EXPIRES_IN,
   });
 };
 
@@ -17,9 +17,11 @@ const createAndSendToken = (user, statusCode, req, res) => {
   const token = signToken(user._id);
 
   res.cookie("jwt", token, {
-    expires: new Date(Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000),
+    expires: new Date(
+      Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000,
+    ),
     httpOnly: true,
-    secure: req.secure || req.headers["x-forwarded-proto"] === "https"
+    secure: req.secure || req.headers["x-forwarded-proto"] === "https",
   });
 
   user.password = undefined;
@@ -28,8 +30,8 @@ const createAndSendToken = (user, statusCode, req, res) => {
     status: "success",
     token,
     data: {
-      user
-    }
+      user,
+    },
   });
 };
 
@@ -51,16 +53,16 @@ exports.signup = catchAsync(async (req, res, next) => {
 });
 
 exports.login = catchAsync(async (req, res, next) => {
-  const {email, password} = req.body;
+  const { email, password } = req.body;
 
   // checking if email and password are provided
-  if(!email || !password) {
+  if (!email || !password) {
     return next(new CustomError("Please provide your email and password", 400));
   }
 
-  // checking if user exists and getting their data 
-  const user = await User.findOne({email}).select("+password");
-  if(!user || !(await user.passwordCorrectness(password, user.password))) {
+  // checking if user existance and checking password
+  const user = await User.findOne({ email }).select("+password");
+  if (!user || !(await user.passwordCorrectness(password, user.password))) {
     return next(new CustomError("Incorrect email or password", 401));
   }
 
