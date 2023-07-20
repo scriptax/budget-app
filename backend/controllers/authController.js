@@ -44,7 +44,7 @@ exports.signup = catchAsync(async (req, res, next) => {
     password: req.body.password,
     passwordConfirm: req.body.passwordConfirm,
     currentBalance: req.body.currentBalance,
-    preferedCurrency: req.body.preferedCurrency,
+    preferredCurrency: req.body.preferredCurrency,
   });
   // console.log(newUser);
   // const url = `${req.protocol}://${req.get("host")}/` for sending welcome message
