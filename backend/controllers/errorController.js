@@ -73,7 +73,7 @@ module.exports = (err, req, res, next) => {
     // console.table(err)
 
     // console.log("error name",err.code)
-    if (error.name === "CastError") error = handleCastErrorDB(error);
+    if (err.name === "CastError") error = handleCastErrorDB(err);
     if (err.code === 11000) error = handleDuplicateFieldsDB(err);
     if (err.name === "ValidationError") error = handleValidationErrorDB(err);
     if (error.name === "JsonWebTokenError") error = handleJWTError();
