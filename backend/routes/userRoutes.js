@@ -8,11 +8,12 @@ const router = express.Router();
 router.post("/signup", authController.signup);
 router.post("/login", authController.login);
 router.get("/logout", authController.logout);
-router.patch("/updatePassword", authController.protect, authController.updatePassword);
 
 // router.post("/test", authController.test);
 // router.post("/account", authController.account);
 router.use(authController.protect);
+router.patch("/updatePassword", authController.updatePassword);
+router.patch("/updateAccount", userController.updateAccount);
 router.delete("/deleteAccount", userController.deleteAccount);
 
 module.exports = router;
