@@ -35,7 +35,7 @@ const userSchema = new mongoose.Schema({
     type: Number,
     required: [true, "Please enter the amount of money you want to budget"],
   },
-  preferedCurrency: {
+  preferredCurrency: {
     type: String,
     required: [true, "Please select your currency"],
   },
