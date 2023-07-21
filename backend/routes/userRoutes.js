@@ -10,8 +10,8 @@ router.post("/login", authController.login);
 router.get("/logout", authController.logout);
 
 // router.post("/test", authController.test);
-// router.post("/account", authController.account);
 router.use(authController.protect);
+router.get("/me", userController.getMe);
 router.patch("/updatePassword", authController.updatePassword);
 router.patch("/updateAccount", userController.updateAccount);
 router.delete("/deleteAccount", userController.deleteAccount);

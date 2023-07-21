@@ -2,6 +2,14 @@ const catchAsync = require("./../utils/catchAsync");
 const User = require("./../models/userModel");
 const CustomError = require("./../utils/customError");
 
+exports.getMe = catchAsync(async(req, res, next) => {
+  const user = await User.findById(req.user.id);
+  res.status(200).json({
+    status: "success",
+    data: {user}
+  });
+});
+
 exports.updateAccount = catchAsync(async (req, res, next) => {
   if(req.body.password || req.body.passwordConfirm) {
     return next(new CustomError("You cannot use this endpoint to update password.", 400));
