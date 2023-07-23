@@ -11,7 +11,7 @@ router.get("/logout", authController.logout);
 
 // router.post("/test", authController.test);
 router.use(authController.protect);
-router.get("/me", userController.getMe);
+router.get("/dashboard", userController.getDashboard);
 router.patch("/updatePassword", authController.updatePassword);
 router.patch("/updateAccount", userController.updateAccount);
 router.delete("/deleteAccount", userController.deleteAccount);

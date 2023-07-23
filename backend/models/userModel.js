@@ -48,6 +48,17 @@ const userSchema = new mongoose.Schema({
     default: true,
     select: false,
   },
+},
+{
+  toJSON: { virtuals: true },
+  toObject: { virtuals: true }
+}
+);
+
+userSchema.virtual("budgets", {
+  ref: "Budget",
+  foreignField: "user",
+  localField: "_id"
 });
 
 userSchema.pre("save", async function (next) {

@@ -1,9 +1,10 @@
 const catchAsync = require("./../utils/catchAsync");
-const User = require("./../models/userModel");
 const CustomError = require("./../utils/customError");
+const User = require("./../models/userModel");
+const Budget = require("./../models/budgetModel");
 
-exports.getMe = catchAsync(async(req, res, next) => {
-  const user = await User.findById(req.user.id);
+exports.getDashboard = catchAsync(async(req, res, next) => {
+  const user = await User.findById(req.user.id).select("-__v").populate({path: "budgets"});
   res.status(200).json({
     status: "success",
     data: {user}
