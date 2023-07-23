@@ -17,7 +17,7 @@ const modelSchema = new mongoose.Schema({
   }
 });
 
-modelSchema.pre("save", (next) => {
+modelSchema.pre("save", function(next) {
   this.setAt = Date.now();
   next();
 });
