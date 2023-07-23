@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const modelSchema = new mongoose.Schema({
+const budgetSchema = new mongoose.Schema({
   name: {
     type: String,
     required: [true, "Please specify a name for the budget."],
@@ -15,13 +15,24 @@ const modelSchema = new mongoose.Schema({
     ref: "User",
     required: [true, "Budget must be assigned to a user"]
   }
+},
+{
+  toJSON: { virtuals: true },
+  toObject: { virtuals: true }
+}
+);
+
+budgetSchema.virtual("expenses", {
+  ref: "User",
+  foreignField: "budget",
+  localField: "_id"
 });
 
-modelSchema.pre("save", function(next) {
+budgetSchema.pre("save", function(next) {
   this.setAt = Date.now();
   next();
 });
 
-const Budget = mongoose.model("Budget", modelSchema);
+const Budget = mongoose.model("Budget", budgetSchema);
 
 module.exports = Budget;

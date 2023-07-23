@@ -60,6 +60,11 @@ userSchema.virtual("budgets", {
   foreignField: "user",
   localField: "_id"
 });
+userSchema.virtual("expenses", {
+  ref: "Expense",
+  foreignField: "user",
+  localField: "_id"
+});
 
 userSchema.pre("save", async function (next) {
   // Check if password is to be modified

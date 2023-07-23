@@ -4,7 +4,9 @@ const User = require("./../models/userModel");
 const Budget = require("./../models/budgetModel");
 
 exports.getDashboard = catchAsync(async(req, res, next) => {
-  const user = await User.findById(req.user.id).select("-__v").populate({path: "budgets"});
+  const user = await User.findById(req.user.id).select("-__v")
+    .populate({path: "budgets"})
+    .populate({path: "expenses"});
   res.status(200).json({
     status: "success",
     data: {user}
