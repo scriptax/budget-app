@@ -6,8 +6,11 @@ const financeController = require("./../controllers/financeController");
 const router = express.Router();
 
 router.use(authController.protect);
-router.use(financeController.appendUserIds);
 
-router.post("/budget", financeController.createBudget);
+router.post("/budget", financeController.appendUserIds, financeController.createBudget);
+router.route("/budget/:id")
+  .get(financeController.getBudget)
+  .patch(financeController.updateBudget)
+  .delete(financeController.deleteBudget);
 
 module.exports = router;
