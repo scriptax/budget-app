@@ -9,7 +9,7 @@ const compression = require("compression");
 
 const testRouter = require("./routes/testRoute");
 const userRoutes = require("./routes/userRoutes");
-const financeRoutes = require("./routes/financeRoutes");
+const budgetRoutes = require("./routes/budgetRoutes");
 const CustomError = require("./utils/customError");
 const globalErrorHandler = require("./controllers/errorController");
 
@@ -32,7 +32,7 @@ app.use(compression());
 // ROUTES
 app.use("/", testRouter);
 app.use("/api/v1/users", userRoutes);
-app.use("/api/v1/finance", financeRoutes);
+app.use("/api/v1/budget", budgetRoutes);
 
 app.all("*", (req, res, next) => {
   next(new CustomError(`Can't find ${req.originalUrl} on this server!`, 404));
