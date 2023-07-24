@@ -10,10 +10,10 @@ const expenseSchema = new mongoose.Schema({
     required: [true, "Expense must have an amount."]
   },
   setAt: Date,
-  category: {
+  budget: {
     type: mongoose.Schema.ObjectId,
     ref: "Budget",
-    required: [true, "Specify a category for the expense."]
+    required: [true, "Specify a budget category for the expense."]
   },
   user: {
     type: mongoose.Schema.ObjectId,
@@ -22,7 +22,7 @@ const expenseSchema = new mongoose.Schema({
   }
 });
 
-expenseSchema.pre("save", (next) => {
+expenseSchema.pre("save", function(next) {
   this.setAt = Date.now();
   next();
 });

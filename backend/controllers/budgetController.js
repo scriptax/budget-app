@@ -9,7 +9,7 @@ exports.appendUserIds = (req, res, next) => {
 };
 
 exports.getBudget = catchAsync(async(req, res, next) => {
-  let budget = await Budget.findById(req.params.id);
+  let budget = await Budget.findById(req.params.id).populate({path: "expenses"});
 
   if(!budget) {
     return next(new CustomError("No item found with this id.", 404));

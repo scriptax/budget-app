@@ -10,6 +10,7 @@ const compression = require("compression");
 const testRouter = require("./routes/testRoute");
 const userRoutes = require("./routes/userRoutes");
 const budgetRoutes = require("./routes/budgetRoutes");
+const expenseRoutes = require("./routes/expenseRoutes");
 const CustomError = require("./utils/customError");
 const globalErrorHandler = require("./controllers/errorController");
 
@@ -33,6 +34,7 @@ app.use(compression());
 app.use("/", testRouter);
 app.use("/api/v1/users", userRoutes);
 app.use("/api/v1/budget", budgetRoutes);
+app.use("/api/v1/expense", expenseRoutes);
 
 app.all("*", (req, res, next) => {
   next(new CustomError(`Can't find ${req.originalUrl} on this server!`, 404));
