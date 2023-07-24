@@ -6,7 +6,8 @@ const Budget = require("./../models/budgetModel");
 exports.getDashboard = catchAsync(async(req, res, next) => {
   const user = await User.findById(req.user.id).select("-__v")
     .populate({path: "budgets"})
-    .populate({path: "expenses"});
+    .populate({path: "expenses"})
+    .populate({path: "incomes"});
   res.status(200).json({
     status: "success",
     data: {user}
