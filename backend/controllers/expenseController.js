@@ -1,6 +1,7 @@
 const catchAsync = require("../utils/catchAsync");
 const CustomError = require("../utils/customError");
 const Expense = require("./../models/expenseModel");
+const User = require("./../models/userModel");
 
 exports.appendUserIds = (req, res, next) => {
   if(!req.body.user) req.body.user = req.user.id;
@@ -24,6 +25,7 @@ exports.getExpenses = catchAsync(async (req, res, next) => {
 
 exports.createExpense = catchAsync(async(req, res, next) => {
   const expense = await Expense.create(req.body);
+  await User.findByIdAndUpdate(req.body.user, {$inc: {currentBalance: req.body.amount * -1}});
 
   res.status(201).json({
     status: "success",
@@ -35,6 +37,7 @@ exports.createExpense = catchAsync(async(req, res, next) => {
 
 exports.deleteExpense = catchAsync(async(req, res, next) => {
   const expense = await Expense.findByIdAndDelete(req.params.id);
+  await User.findByIdAndUpdate(req.body.user, {$inc: {currentBalance: await expense.amount}});
 
   if(!expense) {
     return next(new CustomError("No expense found with this id.", 404));
