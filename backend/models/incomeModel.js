@@ -22,6 +22,11 @@ incomeSchema.pre("save", function(next) {
   next();
 });
 
+incomeSchema.pre(/^find/, function(next) {
+  this.select("-__v");
+  next();
+});
+
 const Income = mongoose.model("Income", incomeSchema);
 
 module.exports = Income;

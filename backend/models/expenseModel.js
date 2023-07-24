@@ -27,6 +27,11 @@ expenseSchema.pre("save", function(next) {
   next();
 });
 
+expenseSchema.pre(/^find/, function(next) {
+  this.select("-__v");
+  next();
+});
+
 const Expense = mongoose.model("Expense", expenseSchema);
 
 module.exports = Expense;

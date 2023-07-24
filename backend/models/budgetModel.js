@@ -33,6 +33,11 @@ budgetSchema.pre("save", function(next) {
   next();
 });
 
+budgetSchema.pre(/^find/, function(next) {
+  this.select("-__v");
+  next();
+});
+
 const Budget = mongoose.model("Budget", budgetSchema);
 
 module.exports = Budget;
