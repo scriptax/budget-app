@@ -9,7 +9,10 @@ exports.appendUserIds = (req, res, next) => {
 };
 
 exports.getExpenses = catchAsync(async (req, res, next) => {
-  const expenses = await Expense.find({user: {$in: req.body.user}}); // need to tell it to exclude inactive ones
+  const expenses = await Expense.find({
+    user: {$in: req.body.user},
+    active: true
+  }); // need to tell it to exclude inactive ones
 
   if(!expenses) {
     return next(new CustomError("No expenses found!", 404));

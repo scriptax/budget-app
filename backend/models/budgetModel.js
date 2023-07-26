@@ -10,6 +10,11 @@ const budgetSchema = new mongoose.Schema({
     required: [true, "Enter an amount  of money for the budget."]
   },
   setAt: Date,
+  active: {
+    type: Boolean,
+    default: true,
+    select: false
+  },
   user: {
     type: mongoose.Schema.ObjectId,
     ref: "User",
@@ -23,7 +28,7 @@ const budgetSchema = new mongoose.Schema({
 );
 
 budgetSchema.virtual("expenses", {
-  ref: "User",
+  ref: "Expense",
   foreignField: "budget",
   localField: "_id"
 });

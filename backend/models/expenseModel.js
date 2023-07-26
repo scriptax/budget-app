@@ -10,6 +10,11 @@ const expenseSchema = new mongoose.Schema({
     required: [true, "Expense must have an amount."]
   },
   setAt: Date,
+  active: {
+    type: Boolean,
+    default: true,
+    select: false
+  },
   budget: {
     type: mongoose.Schema.ObjectId,
     ref: "Budget",
