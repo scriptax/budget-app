@@ -10,6 +10,10 @@ const budgetSchema = new mongoose.Schema(
       type: Number,
       required: [true, "Enter an amount  of money for the budget."],
     },
+    category: {
+      type: String,
+      required: [true, "Specify a category for the budget."]
+    },
     setAt: Date,
     active: {
       type: Boolean,

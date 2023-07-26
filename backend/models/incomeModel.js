@@ -9,6 +9,10 @@ const incomeSchema = new mongoose.Schema({
     type: Number,
     required: [true, "Income must have an amount."],
   },
+  category: {
+    type: String,
+    required: [true, "Specify a category for the income."]
+  },
   setAt: Date,
   user: {
     type: mongoose.Schema.ObjectId,
