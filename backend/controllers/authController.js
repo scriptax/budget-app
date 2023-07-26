@@ -73,29 +73,41 @@ exports.login = catchAsync(async (req, res, next) => {
 exports.logout = (req, res, next) => {
   res.cookie("jwt", "loggedout", {
     expires: new Date(Date.now() + 10 * 1000),
-    httpOnly: true
+    httpOnly: true,
   });
   res.status(200).json({ status: "success" });
 };
 
 exports.protect = catchAsync(async (req, res, next) => {
   let token = req.cookies.jwt;
-  if(!token) {
-    return next(new CustomError("You must be logged in to perform that action!", 401));
+  if (!token) {
+    return next(
+      new CustomError("You must be logged in to perform that action!", 401),
+    );
   }
 
   // decode the token to userid it was issued for
-  const decodedToken = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
+  const decodedToken = await promisify(jwt.verify)(
+    token,
+    process.env.JWT_SECRET,
+  );
 
   // check if user exist in the DB
   const currentUser = await User.findById(decodedToken.id);
-  if(!currentUser) {
-    return next(new CustomError("The user the token was issued for does not exist.", 401));
+  if (!currentUser) {
+    return next(
+      new CustomError("The user the token was issued for does not exist.", 401),
+    );
   }
 
   // check if password has not changed after token was issued
-  if(currentUser.changedPasswordAfter(decodedToken.iat)) {
-    return next(new CustomError("Password has been changed recently. Please log in again.", 401));
+  if (currentUser.changedPasswordAfter(decodedToken.iat)) {
+    return next(
+      new CustomError(
+        "Password has been changed recently. Please log in again.",
+        401,
+      ),
+    );
   }
 
   // Everything checked. Grant access...
@@ -103,11 +115,13 @@ exports.protect = catchAsync(async (req, res, next) => {
   next();
 });
 
-exports.updatePassword = catchAsync(async(req, res, next) => {
+exports.updatePassword = catchAsync(async (req, res, next) => {
   const user = await User.findById(req.user.id).select("+password");
 
   // check if the given current password is correct
-  if(!(await user.passwordCorrectness(req.body.currentPassword, user.password))) {
+  if (
+    !(await user.passwordCorrectness(req.body.currentPassword, user.password))
+  ) {
     return next(new CustomError("Current password is not correct", 401));
   }
 

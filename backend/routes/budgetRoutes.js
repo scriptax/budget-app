@@ -9,7 +9,8 @@ router.use(authController.protect);
 router.use(budgetController.appendUserIds);
 
 router.post("/", budgetController.createBudget);
-router.route("/:id")
+router
+  .route("/:id")
   .get(budgetController.getBudget)
   .patch(budgetController.updateBudget, budgetController.closeBudget)
   .delete(budgetController.deleteBudget);
