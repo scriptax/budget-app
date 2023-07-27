@@ -12,6 +12,7 @@ const userRoutes = require("./routes/userRoutes");
 const budgetRoutes = require("./routes/budgetRoutes");
 const expenseRoutes = require("./routes/expenseRoutes");
 const incomeRoutes = require("./routes/incomeRoutes");
+const statsRoutes = require("./routes/statsRoutes");
 const CustomError = require("./utils/customError");
 const globalErrorHandler = require("./controllers/errorController");
 
@@ -37,6 +38,7 @@ app.use("/api/v1/users", userRoutes);
 app.use("/api/v1/budget", budgetRoutes);
 app.use("/api/v1/expense", expenseRoutes);
 app.use("/api/v1/income", incomeRoutes);
+app.use("/api/v1/stats", statsRoutes);
 
 app.all("*", (req, res, next) => {
   next(new CustomError(`Can't find ${req.originalUrl} on this server!`, 404));
