@@ -10,6 +10,6 @@ router.get("/expense-report", statsController.expenseData);
 router.get("/income-report", statsController.incomeData);
 router.get("/saving-report", statsController.savingData);
 
-// router.route("/breakdown-report")
+router.get("/expense-breakdown", statsController.expenseBreakdown);
 
 module.exports = router;

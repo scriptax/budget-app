@@ -32,7 +32,6 @@ const aggregateData = async(Model, req, filter) => {
     }
   ];
 
-
   const data = await Model.aggregate(pipeline);
 
   return data.map(item => ({
@@ -89,3 +88,73 @@ exports.savingData = catchAsync(async (req, res, next) => {
     }
   });
 });
+
+exports.expenseBreakdown = catchAsync(async (req, res, next) => {
+  const id = new mongoose.Types.ObjectId(req.user.id);
+  const queryYear = parseInt(req.query.year, 10);
+  const queryMonth = parseInt(req.query.month, 10);
+
+  const pipeline = [
+    {
+      $project: {
+        setAt: 1,
+        user: 1,
+        budget: 1,
+        amount: 1,
+        year: { $year: "$setAt" },
+        month: { $month: "$setAt" }
+      }
+    },
+    {
+      $match: {
+        user: id,
+        year: queryYear,
+        ...(queryMonth && {month: queryMonth})
+      }
+    },
+    {
+      $lookup: {
+        from: "budgets", // The name of the Budget collection in MongoDB
+        localField: 'budget',
+        foreignField: '_id',
+        as: 'budgetDetails',
+      },
+    },
+    {
+      $unwind: '$budgetDetails',
+    },
+    {
+      $group: {
+        _id: '$budgetDetails.category',
+        totalExpense: { $sum: '$amount' },
+      },
+    },
+    {
+      $project: {
+        category: '$_id',
+        totalExpense: 1,
+        _id: 0,
+      },
+    },
+  ];
+
+  const expenses = await Expense.aggregate(pipeline);
+
+  const totalExpenses = expenses.reduce((acc, item) => acc + item.totalExpense, 0);
+
+  const statsData = expenses.map((item) => ({
+    category: item.category,
+    percentage: Math.round((item.totalExpense * 10000 / totalExpenses)) / 100,
+  }));
+
+  res.status(200).json({
+    status: "success",
+    data: {
+      statsData
+    }
+  });
+});
+
+// exports.incomeBreakdown = catchAsync(async (req, res, next) => {
+
+// });
