@@ -11,5 +11,6 @@ router.get("/income-report", statsController.incomeData);
 router.get("/saving-report", statsController.savingData);
 
 router.get("/expense-breakdown", statsController.expenseBreakdown);
+router.get("/income-breakdown", statsController.incomeBreakdown);
 
 module.exports = router;

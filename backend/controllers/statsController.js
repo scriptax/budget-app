@@ -155,6 +155,57 @@ exports.expenseBreakdown = catchAsync(async (req, res, next) => {
   });
 });
 
-// exports.incomeBreakdown = catchAsync(async (req, res, next) => {
+exports.incomeBreakdown = catchAsync(async (req, res, next) => {
+  const id = new mongoose.Types.ObjectId(req.user.id);
+  const queryYear = parseInt(req.query.year, 10);
+  const queryMonth = parseInt(req.query.month, 10);
 
-// });
+  const pipeline = [
+    {
+      $project: {
+        setAt: 1,
+        user: 1,
+        amount: 1,
+        category: 1,
+        year: { $year: "$setAt" },
+        month: { $month: "$setAt" }
+      }
+    },
+    {
+      $match: {
+        user: id,
+        year: queryYear,
+        ...(queryMonth && {month: queryMonth})
+      }
+    },
+    {
+      $group: {
+        _id: '$category',
+        totalIncome: { $sum: '$amount' },
+      },
+    },
+    {
+      $project: {
+        category: '$_id',
+        totalIncome: 1,
+        _id: 0,
+      },
+    },
+  ];
+
+  const incomes = await Income.aggregate(pipeline);
+
+  const totalIncomes = incomes.reduce((acc, item) => acc + item.totalIncome, 0);
+
+  const statsData = incomes.map((item) => ({
+    category: item.category,
+    percentage: Math.round((item.totalIncome * 10000 / totalIncomes)) / 100,
+  }));
+
+  res.status(200).json({
+    status: "success",
+    data: {
+      statsData
+    }
+  });
+});
