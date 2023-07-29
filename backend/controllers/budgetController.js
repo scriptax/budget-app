@@ -64,7 +64,7 @@ exports.closeBudget = catchAsync(async (req, res, next) => {
   if (!oldBudget) {
     return next(new CustomError("No item found with this id.", 404));
   }
-
+  
   await Expense.updateMany(
     {
       budget: { $in: oldBudget._id },
@@ -77,6 +77,7 @@ exports.closeBudget = catchAsync(async (req, res, next) => {
   const newBudget = await Budget.create({
     name: oldBudget.name,
     amount: oldBudget.amount,
+    category: oldBudget.category,
     user: req.body.user,
   });
 
