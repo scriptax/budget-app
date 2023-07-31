@@ -15,13 +15,16 @@ const signToken = (id) => {
 const createAndSendToken = (user, statusCode, req, res) => {
   // console.log(req)
   const token = signToken(user._id);
-
+  const isLocalhost = req.hostname === '127.0.0.1';
+  console.log(req.hostname)
+  const secure = isLocalhost ? true : req.secure || req.headers['x-forwarded-proto'] === 'https';
   res.cookie("jwt", token, {
     expires: new Date(
       Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000,
     ),
     httpOnly: true,
-    secure: req.secure || req.headers["x-forwarded-proto"] === "https",
+    sameSite: "None",
+    secure: secure,
   });
 
   user.password = undefined;
