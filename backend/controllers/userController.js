@@ -16,28 +16,70 @@ exports.getDashboard = catchAsync(async (req, res, next) => {
   const month = now.getMonth();
   const year = now.getFullYear();
   const user = await User.aggregate([
+    // Get user
     { $match: { _id: userId } },
-    { $unwind: '$_id' },
-    { $lookup: { from: 'incomes', localField: '_id', foreignField: 'user', as: 'income' } },
-    { $match: { 'income.setAt': { $gte: new Date(year, month, 1), $lt: new Date(year, month + 1, 1) } } },
-    { $group: { _id: '$_id', name: { $first: '$name' }, email: { $first: '$email' }, currentBalance: { $first: "$currentBalance"}, preferredCurrency: { $first: "$preferredCurrency" }, totalIncome: {$first:{ $sum: '$income.amount'} } } },
-    { $unwind: '$_id' },
-    { $lookup: { from: 'expenses', localField: '_id', foreignField: 'user', as: 'expense' } },
-    { $match: { 'expense.setAt': { $gte: new Date(year, month, 1), $lt: new Date(year, month + 1, 1) } } },
-    { $group: { _id: '$_id', name: { $first: '$name' }, email: { $first: '$email' }, currentBalance: { $first: "$currentBalance"}, preferredCurrency: { $first: "$preferredCurrency" }, totalIncome: { $first: '$totalIncome' }, totalExpense: {$first: { $sum: '$expense.amount'} } } },
-    { $lookup: {
-        from: 'budgets',
+
+    // Get user's incomes and calc the sum
+    {
+      $lookup: {
+        from: 'incomes',
         let: { userId: '$_id' },
-        as: 'budgets',
         pipeline: [
-          { $match: {
+          {
+            $match: {
               $expr: {
-                $and: [{ $eq: ['$user', '$$userId'] }, { $eq: ['$active', true] }]
+                $and: [
+                  { $eq: ['$user', '$$userId'] },
+                  { $gte: ['$setAt', new Date(year, month - 1, 1)] },
+                  { $lt: ['$setAt', new Date(year, month, 1)] }
+                ]
               }
-          }}
+            }
+          },
         ],
-      }}
+        as: 'income'
+      }
+    },
+    { $group: { _id: '$_id', name: { $first: '$name' }, email: { $first: '$email' }, currentBalance: { $first: "$currentBalance"}, preferredCurrency: { $first: "$preferredCurrency" }, totalIncome: {$first:{ $sum: '$income.amount'} } } },
+
+    // Get user's expenses and calc the sum
+    {
+      $lookup: {
+        from: 'expenses',
+        let: { userId: '$_id' },
+        pipeline: [
+          {
+            $match: {
+              $expr: {
+                $and: [
+                  { $eq: ['$user', '$$userId'] },
+                  { $gte: ['$setAt', new Date(year, month - 1, 1)] },
+                  { $lt: ['$setAt', new Date(year, month, 1)] }
+                ]
+              }
+            }
+          },
+        ],
+        as: 'expense'
+      }
+    },
+    { $group: { _id: '$_id', name: { $first: '$name' }, email: { $first: '$email' }, currentBalance: { $first: "$currentBalance"}, preferredCurrency: { $first: "$preferredCurrency" }, totalIncome: { $first: '$totalIncome' }, totalExpense: {$first: { $sum: '$expense.amount'} } } },
+
+    // Get the user's budgets
+    { $lookup: {
+      from: 'budgets',
+      let: { userId: '$_id' },
+      as: 'budgets',
+      pipeline: [
+        { $match: {
+            $expr: {
+              $and: [{ $eq: ['$user', '$$userId'] }, { $eq: ['$active', true] }]
+            }
+        }}
+      ],
+    }}
   ]);
+  console.log(user)
   res.status(200).json({
     status: "success",
     data: { user: user[0] },
