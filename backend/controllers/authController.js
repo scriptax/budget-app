@@ -74,9 +74,13 @@ exports.login = catchAsync(async (req, res, next) => {
 });
 
 exports.logout = (req, res, next) => {
+  const isLocalhost = req.hostname === '127.0.0.1';
+  const secure = isLocalhost ? true : req.secure || req.headers['x-forwarded-proto'] === 'https';
   res.cookie("jwt", "loggedout", {
     expires: new Date(Date.now() + 10 * 1000),
     httpOnly: true,
+    sameSite: "None",
+    secure: secure,
   });
   res.status(200).json({ status: "success" });
 };
