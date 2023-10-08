@@ -13,10 +13,8 @@ const signToken = (id) => {
 };
 
 const createAndSendToken = (user, statusCode, req, res) => {
-  // console.log(req)
   const token = signToken(user._id);
   const isLocalhost = req.hostname === '127.0.0.1';
-  console.log(req.hostname)
   const secure = isLocalhost ? true : req.secure || req.headers['x-forwarded-proto'] === 'https';
   res.cookie("jwt", token, {
     expires: new Date(
@@ -39,8 +37,6 @@ const createAndSendToken = (user, statusCode, req, res) => {
 };
 
 exports.signup = catchAsync(async (req, res, next) => {
-  // console.log("endpoint hit!")
-  // console.log(req.body)
   const newUser = await User.create({
     name: req.body.name,
     email: req.body.email,
@@ -49,9 +45,6 @@ exports.signup = catchAsync(async (req, res, next) => {
     currentBalance: req.body.currentBalance,
     preferredCurrency: req.body.preferredCurrency,
   });
-  // console.log(newUser);
-  // const url = `${req.protocol}://${req.get("host")}/` for sending welcome message
-  // console.log("sending response...")
   createAndSendToken(newUser, 201, req, res);
 });
 

@@ -74,7 +74,6 @@ userSchema.virtual("incomes", {
 
 userSchema.pre("save", async function (next) {
   // Check if password is to be modified
-  // console.log("password enctypted")
   if (!this.isModified("password")) return next();
 
   this.password = await bcrypt.hash(this.password, 12);

@@ -79,7 +79,6 @@ exports.getDashboard = catchAsync(async (req, res, next) => {
       ],
     }}
   ]);
-  console.log(user)
   res.status(200).json({
     status: "success",
     data: { user: user[0] },
