@@ -1,6 +1,6 @@
 @font-face {
-  font-family: "Overpass";
-  src: url(../../assets/fonts/Overpass.ttf) format('truetype');
+  font-family: "Poppins";
+  src: url(../../assets/fonts/Poppins-Regular.ttf) format('truetype');
 }
 
 @tailwind base;
@@ -14,13 +14,15 @@
 
   .scrollbar::-webkit-scrollbar-track {
     background: transparent;
+    margin-bottom: 5px;
   }
 
   .scrollbar::-webkit-scrollbar-thumb {
-    background: rgb(186, 255, 208);
+    background: rgb(110, 127, 155);
+    border-radius: 4px;
   }
 
   .scrollbar::-webkit-scrollbar-thumb:hover {
-    background: rgb(159, 255, 194);
+    background: rgb(117, 135, 163);
   }
 }
