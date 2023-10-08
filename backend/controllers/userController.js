@@ -96,6 +96,7 @@ exports.updateAccount = catchAsync(async (req, res, next) => {
   const newInfo = {
     name: req.body.name,
     email: req.body.email,
+	currentBalance: req.body.currentBalance,
     preferredCurrency: req.body.preferredCurrency,
   };
 

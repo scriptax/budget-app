@@ -142,7 +142,7 @@ exports.expenseBreakdown = catchAsync(async (req, res, next) => {
 
   const totalExpenses = expenses.reduce((acc, item) => acc + item.totalExpense, 0);
 
-  const statsData = expenses.map((item) => ({
+  const data = expenses.map((item) => ({
     category: item.category,
     percentage: Math.round((item.totalExpense * 10000 / totalExpenses)) / 100,
   }));
@@ -150,7 +150,7 @@ exports.expenseBreakdown = catchAsync(async (req, res, next) => {
   res.status(200).json({
     status: "success",
     data: {
-      statsData
+      data
     }
   });
 });
@@ -197,7 +197,7 @@ exports.incomeBreakdown = catchAsync(async (req, res, next) => {
 
   const totalIncomes = incomes.reduce((acc, item) => acc + item.totalIncome, 0);
 
-  const statsData = incomes.map((item) => ({
+  const data = incomes.map((item) => ({
     category: item.category,
     percentage: Math.round((item.totalIncome * 10000 / totalIncomes)) / 100,
   }));
@@ -205,7 +205,7 @@ exports.incomeBreakdown = catchAsync(async (req, res, next) => {
   res.status(200).json({
     status: "success",
     data: {
-      statsData
+      data
     }
   });
 });
