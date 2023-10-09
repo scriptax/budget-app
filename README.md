@@ -2,7 +2,7 @@
   <h2>Personal finance manager web app</h2>
   Check the live demo <a href="https://pocket.stonebob.eu.org/">here</a><br />
   Spotted a bug? No worries, open an issue.
-  <img src="./public/preview.jpg">
+  <img src="./frontend/public/preview.jpg">
 </div>
 
 ## About the project
