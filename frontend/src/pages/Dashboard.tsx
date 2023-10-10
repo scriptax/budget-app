@@ -127,7 +127,7 @@ function FormLayer({ budgets }: FormLayerPropsTypes): ReactElement {
             </ul>
           )}
           {form !== "none" && (
-            <div className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-10/12 md:w-1/2 lg:w-1/3 p-5 rounded-md bg-white">
+            <div className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-11/12 md:w-1/2 lg:w-1/3 p-5 rounded-md bg-white">
               <button
                 className="absolute right-2 top-2 w-10 h-10 rounded-3xl grid place-content-center hover:bg-slate-200"
                 onClick={() => {
@@ -169,7 +169,7 @@ function Dashboard() {
   );
 
   return (
-    <section className="p-4 w-full h-full relative min-h-screen">
+    <section className="p-4 w-full h-full relative min-h-screen scrollbar">
       <div className="grid grid-cols-2 md:grid-cols-4 mb-5">
         <SummaryCard
           Icon={FaSackDollar}
@@ -197,9 +197,10 @@ function Dashboard() {
         />
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-        {dashboard.budgets.map(({ name, category, amount, spent, _id }) => (
+        {dashboard.budgets.map(({ name, category, amount, spent, _id }, index) => (
           <Link to={`budget/${_id}`} className="block m-1">
             <BudgetCard
+              key={index}
               name={name}
               category={category}
               amount={amount}

@@ -23,7 +23,7 @@ const formContent: FormContentType[] = [
     intend: "newBudget",
     title: "Create Budget",
     TitleIcon: FaMoneyCheckDollar,
-    nameHint: "E.g. November groceries",
+    nameHint: "e.g. November groceries",
     categoryName: "Budget category",
     confirmText: "Create",
     inProgressText: "Creating...",
@@ -32,7 +32,7 @@ const formContent: FormContentType[] = [
     intend: "editBudget",
     title: "Edit Budget",
     TitleIcon: FaMoneyCheckDollar,
-    nameHint: "E.g. November groceries",
+    nameHint: "e.g. November groceries",
     categoryName: "Budget category",
     confirmText: "Edit",
     inProgressText: "Editing...",
@@ -41,7 +41,7 @@ const formContent: FormContentType[] = [
     intend: "newExpense",
     title: "Add Expense",
     TitleIcon: GiPayMoney,
-    nameHint: "E.g. vegetables",
+    nameHint: "e.g. vegetables",
     categoryName: "Budget",
     confirmText: "Add",
     inProgressText: "Adding...",
@@ -50,7 +50,7 @@ const formContent: FormContentType[] = [
     intend: "newIncome",
     title: "Add Income",
     TitleIcon: FaMoneyBill1,
-    nameHint: "E.g. April salary",
+    nameHint: "e.g. April salary",
     categoryName: "Income category",
     confirmText: "Add",
     inProgressText: "Adding...",
@@ -80,7 +80,7 @@ function AddForm({
   const [formData, setFormData] = useState({
     name: prevName || "",
     amount: prevAmount || 0,
-    category: prevCategory || { name: "Category", code: "" },
+    category: prevCategory || { name: "Select...", code: "" },
   });
 
   useEffect(() => {
@@ -88,7 +88,7 @@ function AddForm({
       setFormData({
         name: prevName || "",
         amount: prevAmount || 0,
-        category: prevCategory || { name: "Category", code: "" },
+        category: prevCategory || { name: "Select...", code: "" },
       });
     }
   }, [isSubmitting]);
@@ -130,22 +130,24 @@ function AddForm({
           changeHandler={changeHandler}
           customClass="w-full my-3"
         />
-        <Input
-          name="amount"
-          placeholder="Amount (e.g. 250)"
-          type="number"
-          value={formData.amount}
-          changeHandler={changeHandler}
-          customClass="w-5/12 mt-3 float-left"
-        />
-        <SearchList
-          title={content.categoryName}
-          name="category"
-          customClass="my-3 w-6/12 float-right"
-          items={categoryItems}
-          listName={formData.category.name}
-          itemPicker={listItemPicker}
-        />
+        <div className="w-full flex justify-between items-center">
+          <Input
+            name="amount"
+            placeholder="Amount (e.g. 250)"
+            type="number"
+            value={formData.amount}
+            changeHandler={changeHandler}
+            customClass="w-5/12 mt-3 float-left"
+          />
+          <SearchList
+            title={content.categoryName}
+            name="category"
+            customClass="mt-3 w-6/12 float-right"
+            items={categoryItems}
+            listName={formData.category.name}
+            itemPicker={listItemPicker}
+          />
+        </div>
         <Button
           accent="blue"
           text={isSubmitting ? content.inProgressText : content.confirmText}

@@ -787,6 +787,14 @@ video {
   margin-top: 1.5rem;
 }
 
+.ml-1 {
+  margin-left: 0.25rem;
+}
+
+.mb-1 {
+  margin-bottom: 0.25rem;
+}
+
 .block {
   display: block;
 }
@@ -861,6 +869,10 @@ video {
 
 .w-10\/12 {
   width: 83.333333%;
+}
+
+.w-11\/12 {
+  width: 91.666667%;
 }
 
 .w-12 {
@@ -1299,6 +1311,12 @@ video {
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
 }
 
+.shadow-lg {
+  --tw-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --tw-shadow-colored: 0 10px 15px -3px var(--tw-shadow-color), 0 4px 6px -4px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+
 .shadow-stone-400 {
   --tw-shadow-color: #a8a29e;
   --tw-shadow: var(--tw-shadow-colored);
@@ -1346,24 +1364,6 @@ video {
 
 .duration-100 {
   transition-duration: 100ms;
-}
-
-.scrollbar::-webkit-scrollbar {
-  width: 7px;
-}
-
-.scrollbar::-webkit-scrollbar-track {
-  background: transparent;
-  margin-bottom: 5px;
-}
-
-.scrollbar::-webkit-scrollbar-thumb {
-  background: rgb(110, 127, 155);
-  border-radius: 4px;
-}
-
-.scrollbar::-webkit-scrollbar-thumb:hover {
-  background: rgb(117, 135, 163);
 }
 
 .odd\:bg-slate-200:nth-child(odd) {
@@ -1455,6 +1455,16 @@ video {
 
   .sm\:flex-row {
     flex-direction: row;
+  }
+
+  .sm\:text-base {
+    font-size: 1rem;
+    line-height: 1.5rem;
+  }
+
+  .sm\:text-sm {
+    font-size: 0.875rem;
+    line-height: 1.25rem;
   }
 }
 

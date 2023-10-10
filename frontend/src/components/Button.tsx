@@ -35,7 +35,7 @@ function Button({
       className={`border-0 outline-none px-4 py-2 ${colorAccents[accentKey]} ${customClasses} text-white rounded-md cursor-pointer active:scale-95 transition-transform duration-100 text-md hover:opacity-95`}
     >
       <span className="mr-2 text-white">{text}</span>
-      <span className="inline-block m-auto">{Icon && <Icon />}</span>
+      {Icon && <span className="inline-block m-auto">{<Icon />}</span>}
     </button>
   );
 }

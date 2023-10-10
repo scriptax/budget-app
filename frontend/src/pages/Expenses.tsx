@@ -82,7 +82,7 @@ function Expenses(): ReactElement {
     <div className="w-full min-h-screen p-3 mx-auto relative">
       <div className="w-full flex flex-col sm:flex-row justify-around">
         {expenseData.length > 0 && (
-          <div className="w-full sm:w-1/2 lg:w-2/5 bg-white p-4 m-1 border border-stone-200 rounded-md">
+          <div className="w-full sm:w-1/2 lg:w-2/5 h-72 bg-white p-4 m-1 border border-stone-200 rounded-md">
             <PieChart
               title="Shares of each budget from total expense"
               label="Share of expenses"
@@ -100,7 +100,7 @@ function Expenses(): ReactElement {
           <hr className="border-stone-300" />
           <h2 className="text-xl font-bold my-4">Recent Expenses</h2>
           <p className="text-lg font-bold my-4">
-            Total Expense:{" "}
+            Total Expense:{" $"}
             {expenseData.reduce((total, value) => total + value.amount, 0)}
           </p>
           <Table

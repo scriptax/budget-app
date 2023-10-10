@@ -74,9 +74,8 @@ function DashboardLayout(): ReactElement {
   return (
     <div className="flex">
       <aside
-        className={`fixed z-30 md:sticky -left-72 w-72 md:w-3/12 lg:w-2/12 top-0 md:left-0 bg-slate-950 h-screen ${
-          showSidebar && "left-0"
-        } overflow-x-hidden transition-[left]`}
+        className={`fixed z-30 md:sticky -left-72 w-72 md:w-3/12 lg:w-2/12 top-0 md:left-0 bg-slate-950 h-screen ${showSidebar && "left-0"
+          } overflow-x-hidden transition-[left]`}
       >
         <div className="text-white text-lg px-5 mt-5 mb-16 flex justify-between items-center">
           <NavLink to="/dashboard/home">
@@ -103,9 +102,13 @@ function DashboardLayout(): ReactElement {
             />
           );
         })}
-        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 text-slate-300 whitespace-nowrap text-xs">
-          <a href="https://github.com/scriptax" target="blank">
-            © {new Date().getFullYear()} by Majid Moradi.
+        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 text-slate-300 whitespace-nowrap text-xs text-center">
+          © {new Date().getFullYear()} by
+          <a href="https://github.com/scriptax" target="blank" className="underline mb-1">
+            {" Majid Moradi."}
+          </a><br />
+          <a href="https://github.com/scriptax/budget-app" target="blank" className="underline">
+            Github code
           </a>
         </div>
       </aside>

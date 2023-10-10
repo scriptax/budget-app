@@ -243,21 +243,21 @@ function BudgetPage(): ReactElement {
       )}
       {(manage.intend === "closeBudget" ||
         manage.intend === "deleteBudget") && (
-        <ConfirmModal
-          message={manage.message}
-          confirmAccent={manage.confirmAccent}
-          confirmText={
-            isSubmitting ? manage.inProgressText : manage.confirmText
-          }
-          proceed={submitHandler}
-          cancel={() => {
-            setManage((prev) => ({ ...prev, intend: "" }));
-          }}
-        />
-      )}
+          <ConfirmModal
+            message={manage.message}
+            confirmAccent={manage.confirmAccent}
+            confirmText={
+              isSubmitting ? manage.inProgressText : manage.confirmText
+            }
+            proceed={submitHandler}
+            cancel={() => {
+              setManage((prev) => ({ ...prev, intend: "" }));
+            }}
+          />
+        )}
       {manage.intend === "editBudget" && (
         <div className="absolute left-0 top-0 w-full h-full z-10 bg-[#0006]">
-          <div className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-10/12 md:w-1/2 lg:w-1/3 p-5 rounded-md bg-white">
+          <div className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-11/12 md:w-1/2 lg:w-1/3 p-5 rounded-md bg-white">
             <AddForm
               prevName={budgetData.name}
               prevAmount={budgetData.amount}

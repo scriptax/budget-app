@@ -6,14 +6,12 @@ import { ExpenseData, IncomeData } from "../types/APIDATA";
 
 type TableBodyRowProps = {
   data: ExpenseData | IncomeData;
-  no: number;
   showCategory: boolean;
   showDelete: boolean;
   tableType: "expense" | "income";
   category: { name: string; code: string };
 };
 const TableBodyRow = ({
-  no,
   category,
   data,
   showCategory,
@@ -24,9 +22,8 @@ const TableBodyRow = ({
   const isSubmitting = fetcher.state === "submitting";
 
   const rowData = [
-    no,
     data.name,
-    data.amount,
+    `$${data.amount}`,
     new Date(data.setAt).toLocaleDateString(),
   ];
   const filteredRowData = rowData.filter((elem) => elem !== undefined);
@@ -42,12 +39,12 @@ const TableBodyRow = ({
   return (
     <>
       {filteredRowData.map((elem, index) => (
-        <td className="text-sm py-2" key={index}>
+        <td className="text-xs sm:text-sm py-2" key={index}>
           {elem}
         </td>
       ))}
       {showCategory && (
-        <td className="text-sm">
+        <td className="text-xs sm:text-sm">
           {tableType === "expense" ? (
             <button className="hover:text-red-700 group">
               <Link to={`/dashboard/home/budget/${category.code}`}>
@@ -60,8 +57,9 @@ const TableBodyRow = ({
         </td>
       )}
       {showDelete && (
-        <td>
+        <td className="text-xs sm:text-sm">
           <button
+            title="Delete item"
             className="hover:text-red-700 group"
             onClick={() => {
               deleteHandler(
@@ -73,7 +71,7 @@ const TableBodyRow = ({
             <FaRegTrashCan className="inline-block" size={15} />
             <span className="text-sm">
               {" "}
-              {isSubmitting ? "Deleting" : "Delete"}
+              {isSubmitting ? "..." : ""}
             </span>
           </button>
         </td>
@@ -99,10 +97,9 @@ function Table({
   return (
     <div className="w-full">
       <table className="w-full border-slate-600">
-        <thead className="bg-slate-800 text-white border-collapse table-auto">
+        <thead className="bg-slate-800 text-white text-xs sm:text-sm border-collapse table-auto">
           <tr>
             {[
-              "No",
               "Name",
               "Amount",
               "Date",
@@ -120,7 +117,7 @@ function Table({
           </tr>
         </thead>
         <tbody>
-          {tableData.map((data, index) => {
+          {tableData.map((data, index, arr) => {
             let category = categories.find((item) =>
               tableType === "expense"
                 ? "budget" in data && data.budget === item.code
@@ -131,9 +128,8 @@ function Table({
                 <TableBodyRow
                   tableType={tableType}
                   key={index}
-                  no={index + 1}
                   category={category!}
-                  data={data}
+                  data={arr[arr.length - index - 1]}
                   showCategory={showCategory}
                   showDelete={showDelete}
                 />

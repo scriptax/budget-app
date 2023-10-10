@@ -81,7 +81,7 @@ const PasswordForm = (): ReactElement => {
     });
   };
   return (
-    <div className="rounded-md border border-stone-200 p-3 w-10/12 md:w-4/5 lg:w-5/12 my-4 mx-auto">
+    <div className="rounded-md border border-stone-200 p-3 w-full md:w-4/5 lg:w-5/12 my-4 mx-auto">
       <h2 className="font-bold text-slate-800">
         <FaKey className="inline-block" size={20} />
         <span className="font-bold text-lg ml-2">Password Change</span>
@@ -152,7 +152,7 @@ const UserForm = (): ReactElement => {
   };
 
   return (
-    <div className="rounded-md border border-stone-200 p-3 w-10/12 md:w-4/5 lg:w-5/12 my-10 mx-auto">
+    <div className="rounded-md border border-stone-200 p-3 w-full md:w-4/5 lg:w-5/12 my-10 mx-auto">
       <h2 className="font-bold text-slate-800">
         <FaUser className="inline-block" size={25} />
         <span className="font-bold text-lg ml-2">Your Account Info</span>
