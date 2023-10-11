@@ -198,7 +198,7 @@ function Dashboard() {
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
         {dashboard.budgets.map(({ name, category, amount, spent, _id }, index) => (
-          <Link to={`budget/${_id}`} className="block m-1">
+          <Link to={`budget/${_id}`} className="m-1 bg-white rounded-lg border border-stone-200 shadow-md block hover:-translate-y-1 transition-transform cursor-pointer">
             <BudgetCard
               key={index}
               name={name}

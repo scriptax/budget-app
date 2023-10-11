@@ -40,7 +40,7 @@ function BudgetCard({
   spent,
 }: BudgetCardType): ReactElement {
   return (
-    <div className="bg-white rounded-lg border border-stone-200 shadow-md p-3 flex hover:-translate-y-1 transition-transform cursor-pointer">
+    <div className="p-3 flex w-full">
       <div className="w-4/5 text-slate-800 text-sm">
         <div className="text-lg mb-2 font-bold my-1 truncate">{name}</div>
         <div className="font-normal my-1">

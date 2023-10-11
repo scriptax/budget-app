@@ -170,7 +170,7 @@ function BudgetPage(): ReactElement {
   }, [isSubmitting]);
   return (
     <div className="w-full min-h-screen p-3 mx-auto relative">
-      <div className="w-full flex flex-col sm:flex-row justify-around">
+      <div className="w-full flex flex-col sm:flex-row justify-around items-center sm:items-stretch">
         <div className="w-full sm:w-1/2 lg:w-2/5 bg-white p-4 m-1 border border-stone-200 rounded-md">
           <BudgetCard
             name={budgetData.name}
@@ -231,7 +231,7 @@ function BudgetPage(): ReactElement {
       {budgetData.expenses.length > 0 && (
         <div className="mt-6">
           <hr className="border-stone-300" />
-          <h2 className="text-xl font-bold my-4">{budgetData.name} Expenses</h2>
+          <h2 className="text-lg font-bold my-4">{budgetData.name} Expenses</h2>
           <Table
             categories={[]}
             showCategory={false}
@@ -261,7 +261,7 @@ function BudgetPage(): ReactElement {
             <AddForm
               prevName={budgetData.name}
               prevAmount={budgetData.amount}
-              prevCategory={{ name: budgetData.name, code: budgetData._id }}
+              prevCategory={{ name: budgetData.category, code: budgetData.category }}
               categoryItems={budgetCategories}
               intend="editBudget"
             />

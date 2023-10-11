@@ -92,7 +92,7 @@ function Incomes(): ReactElement {
 
   return (
     <div className="w-full min-h-screen p-3 mx-auto relative">
-      <div className="w-full flex flex-col sm:flex-row justify-around">
+      <div className="w-full flex flex-col sm:flex-row justify-around items-center sm:items-stretch">
         {incomeData.length > 0 && (
           <div className="w-full sm:w-1/2 lg:w-2/5 h-72 bg-white p-4 m-1 border border-stone-200 rounded-md">
             <PieChart
@@ -110,8 +110,8 @@ function Incomes(): ReactElement {
       {incomeData.length > 0 && (
         <div className="mt-6">
           <hr className="border-stone-300" />
-          <h2 className="text-xl font-bold my-4">Last 30 day's incomes</h2>
-          <p className="text-lg font-bold my-4">
+          <h2 className="text-lg font-bold my-4">Last 30 day's incomes</h2>
+          <p className="text-md font-bold my-4">
             Total Income:{" $"}
             {incomeData.reduce((total, value) => total + value.amount, 0)}
           </p>

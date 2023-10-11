@@ -204,7 +204,7 @@ function Stats(): ReactElement {
         </div>
       )}
       {showRep && (
-        <div className="w-full flex flex-col sm:flex-row justify-around">
+        <div className="w-full flex flex-col sm:flex-row justify-around items-center sm:items-stretch">
           {/* <div className="w-full sm:w-1/2 lg:w-2/5 m-1 bg-white p-4 border border-stone-200 rounded-md">
           report
         </div> */}
@@ -238,23 +238,22 @@ function Stats(): ReactElement {
             {statOptions.reptype.code === "expense-report" &&
               statOptions.year.code !== "" && (
                 <BarChart
-                  title={`Expenses of ${
-                    !statOptions.category.code
+                  title={`Expenses of ${!statOptions.category.code
                       ? "all categories"
                       : statOptions.category.name + " category"
-                  } in ${statOptions.year.name}`}
+                    } in ${statOptions.year.name}`}
                   labels={months.map((elem) => elem.name)}
                   label="Expense amount ($)"
                   data={
                     stats!.length > 0
                       ? months.map((elem, index) => {
-                          let match = stats!.find(
-                            (elem) => (elem as any).month === index + 1,
-                          );
-                          if (match) {
-                            return (match as any).total;
-                          } else return 0;
-                        })
+                        let match = stats!.find(
+                          (elem) => (elem as any).month === index + 1,
+                        );
+                        if (match) {
+                          return (match as any).total;
+                        } else return 0;
+                      })
                       : new Array(12).fill(0)
                   }
                 />
@@ -262,23 +261,22 @@ function Stats(): ReactElement {
             {statOptions.reptype.code === "income-report" &&
               statOptions.year.code !== "" && (
                 <BarChart
-                  title={`Incomes from ${
-                    !statOptions.category.code
+                  title={`Incomes from ${!statOptions.category.code
                       ? "all categories"
                       : statOptions.category.name + " category"
-                  } in ${statOptions.year.name}`}
+                    } in ${statOptions.year.name}`}
                   labels={months.map((elem) => elem.name)}
                   label="Income amount ($)"
                   data={
                     stats!.length > 0
                       ? months.map((elem, index) => {
-                          let match = stats!.find(
-                            (elem) => (elem as any).month === index + 1,
-                          );
-                          if (match) {
-                            return (match as any).total;
-                          } else return 0;
-                        })
+                        let match = stats!.find(
+                          (elem) => (elem as any).month === index + 1,
+                        );
+                        if (match) {
+                          return (match as any).total;
+                        } else return 0;
+                      })
                       : new Array(12).fill(0)
                   }
                 />
@@ -292,13 +290,13 @@ function Stats(): ReactElement {
                   data={
                     stats!.length > 0
                       ? months.map((elem, index) => {
-                          let match = stats!.find(
-                            (elem) => (elem as any).month === index + 1,
-                          );
-                          if (match) {
-                            return (match as any).saving;
-                          } else return 0;
-                        })
+                        let match = stats!.find(
+                          (elem) => (elem as any).month === index + 1,
+                        );
+                        if (match) {
+                          return (match as any).saving;
+                        } else return 0;
+                      })
                       : new Array(12).fill(0)
                   }
                 />

@@ -118,10 +118,11 @@ function Table({
         </thead>
         <tbody>
           {tableData.map((data, index, arr) => {
+            let rowData = arr[arr.length - index - 1];
             let category = categories.find((item) =>
               tableType === "expense"
-                ? "budget" in data && data.budget === item.code
-                : "category" in data && data.category === item.name,
+                ? "budget" in rowData && (rowData as ExpenseData).budget === item.code
+                : "category" in rowData && (rowData as IncomeData).category === item.name,
             );
             return (
               <tr className="text-center odd:bg-slate-200 hover:bg-orange-100 ">
@@ -129,7 +130,7 @@ function Table({
                   tableType={tableType}
                   key={index}
                   category={category!}
-                  data={arr[arr.length - index - 1]}
+                  data={rowData}
                   showCategory={showCategory}
                   showDelete={showDelete}
                 />

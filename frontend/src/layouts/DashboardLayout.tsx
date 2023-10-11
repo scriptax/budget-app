@@ -119,8 +119,8 @@ function DashboardLayout(): ReactElement {
               onClick={() => {
                 setShowSidebar(true);
               }}
-              className="w-10 h-10 hover:bg-slate-800 cursor-pointer md:hidden inline-block mr-4"
-              size={25}
+              className="cursor-pointer md:hidden mr-4"
+              size={30}
             />
             {new Date().toDateString()}
           </div>
