@@ -9,7 +9,7 @@ const colorAccents: object = {
   slate: "bg-slate-800",
 };
 type PropsType = {
-  text?: String;
+  text: String;
   accent: String;
   customClasses?: String;
   onClick?: () => void;

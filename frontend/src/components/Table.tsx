@@ -3,13 +3,14 @@ import { Link, useFetcher } from "react-router-dom";
 import { FaRegTrashCan } from "react-icons/fa6";
 
 import { ExpenseData, IncomeData } from "../types/APIDATA";
+import { ListItemsType } from "./SearchList";
 
 type TableBodyRowProps = {
   data: ExpenseData | IncomeData;
   showCategory: boolean;
   showDelete: boolean;
   tableType: "expense" | "income";
-  category: { name: string; code: string };
+  category: ListItemsType;
 };
 const TableBodyRow = ({
   category,
@@ -32,7 +33,6 @@ const TableBodyRow = ({
     const actionData = { id, intend };
     fetcher.submit(actionData, {
       method: "post",
-      // action: "/auth/signup",
       encType: "application/json",
     });
   };
@@ -85,7 +85,7 @@ type PropsType = {
   showDelete: boolean;
   tableData: ExpenseData[] | IncomeData[];
   tableType: "expense" | "income";
-  categories: { name: string; code: string }[];
+  categories: ListItemsType[];
 };
 function Table({
   showCategory,

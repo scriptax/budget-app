@@ -76,7 +76,6 @@ const PasswordForm = (): ReactElement => {
     const actionData = { ...formData, intend: "updatePassword" };
     fetcher.submit(actionData, {
       method: "post",
-      // action: "/auth/signup",
       encType: "application/json",
     });
   };
@@ -146,7 +145,6 @@ const UserForm = (): ReactElement => {
     const actionData = { ...formData, intend: "updateData" };
     fetcher.submit(actionData, {
       method: "post",
-      // action: "/auth/signup",
       encType: "application/json",
     });
   };

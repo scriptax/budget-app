@@ -14,7 +14,7 @@ import {
 
 import SearchList, { ListItemsType } from "../components/SearchList";
 import Button from "../components/Button";
-import { budgetCategories, incomeCategories } from "../data/defaultData";
+import { budgetCategories, incomeCategories, years, months } from "../data/defaultData";
 import { getStats } from "../utils/statsRequests";
 import { BarChart, PieChart } from "../components/Charts";
 
@@ -57,36 +57,6 @@ const charts = [
   { name: "Saving report", code: "saving-report" },
 ];
 
-const months = [
-  { name: "January", code: "1" },
-  { name: "February", code: "2" },
-  { name: "March", code: "3" },
-  { name: "April", code: "4" },
-  { name: "May", code: "5" },
-  { name: "June", code: "6" },
-  { name: "July", code: "7" },
-  { name: "August", code: "8" },
-  { name: "September", code: "9" },
-  { name: "October", code: "10" },
-  { name: "November", code: "11" },
-  { name: "December", code: "12" },
-];
-
-const years = [
-  { name: "2023", code: "2023" },
-  { name: "2024", code: "2024" },
-  { name: "2025", code: "2025" },
-  { name: "2026", code: "2026" },
-  { name: "2027", code: "2027" },
-  { name: "2028", code: "2028" },
-  { name: "2029", code: "2029" },
-  { name: "2030", code: "2030" },
-  { name: "2031", code: "2031" },
-  { name: "2032", code: "2032" },
-  { name: "2033", code: "2033" },
-  { name: "2034", code: "2034" },
-];
-
 // const NoData = (): ReactElement => {
 //   return (
 //     <div className="w-full text-xl text-center text-slate-500 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
@@ -119,10 +89,10 @@ function Stats(): ReactElement {
     const actionData = statOptions;
     fetcher.submit(actionData, {
       method: "post",
-      // action: "/auth/signup",
       encType: "application/json",
     });
   };
+
   useEffect(() => {
     setStatOptions((prev) => ({
       ...prev,
@@ -239,8 +209,8 @@ function Stats(): ReactElement {
               statOptions.year.code !== "" && (
                 <BarChart
                   title={`Expenses of ${!statOptions.category.code
-                      ? "all categories"
-                      : statOptions.category.name + " category"
+                    ? "all categories"
+                    : statOptions.category.name + " category"
                     } in ${statOptions.year.name}`}
                   labels={months.map((elem) => elem.name)}
                   label="Expense amount ($)"
@@ -262,8 +232,8 @@ function Stats(): ReactElement {
               statOptions.year.code !== "" && (
                 <BarChart
                   title={`Incomes from ${!statOptions.category.code
-                      ? "all categories"
-                      : statOptions.category.name + " category"
+                    ? "all categories"
+                    : statOptions.category.name + " category"
                     } in ${statOptions.year.name}`}
                   labels={months.map((elem) => elem.name)}
                   label="Income amount ($)"

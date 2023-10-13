@@ -1,68 +1,17 @@
 import { ChangeEvent, ReactElement, useState, useEffect } from "react";
 import { useFetcher } from "react-router-dom";
-import { FaMoneyCheckDollar, FaMoneyBill1 } from "react-icons/fa6";
-import { GiPayMoney } from "react-icons/gi";
-import { IconType } from "react-icons/lib";
 
 import Input from "./Input";
 import Button from "./Button";
 import SearchList, { ListItemsType } from "./SearchList";
-
-type FormContentType = {
-  intend: string;
-  title: string;
-  TitleIcon: IconType;
-  nameHint: string;
-  categoryName: string;
-  confirmText: string;
-  inProgressText: string;
-};
-
-const formContent: FormContentType[] = [
-  {
-    intend: "newBudget",
-    title: "Create Budget",
-    TitleIcon: FaMoneyCheckDollar,
-    nameHint: "e.g. November groceries",
-    categoryName: "Budget category",
-    confirmText: "Create",
-    inProgressText: "Creating...",
-  },
-  {
-    intend: "editBudget",
-    title: "Edit Budget",
-    TitleIcon: FaMoneyCheckDollar,
-    nameHint: "e.g. November groceries",
-    categoryName: "Budget category",
-    confirmText: "Edit",
-    inProgressText: "Editing...",
-  },
-  {
-    intend: "newExpense",
-    title: "Add Expense",
-    TitleIcon: GiPayMoney,
-    nameHint: "e.g. vegetables",
-    categoryName: "Budget",
-    confirmText: "Add",
-    inProgressText: "Adding...",
-  },
-  {
-    intend: "newIncome",
-    title: "Add Income",
-    TitleIcon: FaMoneyBill1,
-    nameHint: "e.g. April salary",
-    categoryName: "Income category",
-    confirmText: "Add",
-    inProgressText: "Adding...",
-  },
-];
+import { formContent } from "../data/defaultData";
 
 type FormProps = {
   intend: "newBudget" | "editBudget" | "newExpense" | "newIncome";
-  categoryItems: { code: string; name: string }[];
+  categoryItems: ListItemsType[];
   prevName?: string;
   prevAmount?: number;
-  prevCategory?: { code: string; name: string };
+  prevCategory?: ListItemsType;
 };
 function AddForm({
   intend,
@@ -74,7 +23,7 @@ function AddForm({
   const fetcher = useFetcher();
   const isSubmitting = fetcher.state === "submitting";
 
-  const content: FormContentType = formContent.find(
+  const content = formContent.find(
     (elem) => elem.intend === intend,
   )!;
   const [formData, setFormData] = useState({
@@ -111,7 +60,6 @@ function AddForm({
     const actionData = { ...formData, intend };
     fetcher.submit(actionData, {
       method: "post",
-      // action: "/auth/signup",
       encType: "application/json",
     });
   };

@@ -1,4 +1,5 @@
 import axios from "axios";
+import { ListItemsType } from "../components/SearchList";
 
 const apiDomain =
   process.env.REACT_APP_ENV === "development"
@@ -8,7 +9,7 @@ const apiDomain =
 type AddBudgetData = {
   name: string;
   amount: string;
-  category: { name: string; code: string };
+  category: ListItemsType;
 };
 async function addBudget({ name, amount, category }: AddBudgetData) {
   const res = await axios({
@@ -27,7 +28,7 @@ async function addBudget({ name, amount, category }: AddBudgetData) {
 type EditBudgetData = {
   name: string;
   amount: string;
-  category: { name: string; code: string };
+  category: ListItemsType;
   id: string;
 };
 async function editBudget({ name, amount, category, id }: EditBudgetData) {
@@ -87,7 +88,7 @@ async function getExpenses() {
 type AddExpenseData = {
   name: string;
   amount: string;
-  category: { name: string; code: string };
+  category: ListItemsType;
 };
 async function addExpense({ name, amount, category }: AddExpenseData) {
   const res = await axios({
@@ -123,7 +124,7 @@ async function getIncomes() {
 type AddIncomeData = {
   name: string;
   amount: string;
-  category: { name: string; code: string };
+  category: ListItemsType;
 };
 async function addIncome({ name, amount, category }: AddIncomeData) {
   const res = await axios({

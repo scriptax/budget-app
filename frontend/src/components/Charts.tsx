@@ -1,3 +1,4 @@
+import { ReactElement } from "react";
 import { Pie, Bar } from "react-chartjs-2";
 import {
   Chart as ChartJS,
@@ -11,7 +12,6 @@ import {
   ChartData,
   Title,
 } from "chart.js";
-import { ReactElement } from "react";
 
 ChartJS.register(
   ArcElement,

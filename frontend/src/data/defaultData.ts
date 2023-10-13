@@ -1,3 +1,7 @@
+import { FaMoneyCheckDollar, FaMoneyBill1 } from "react-icons/fa6";
+import { GiPayMoney } from "react-icons/gi";
+import { IconType } from "react-icons/lib";
+
 export const budgetCategories = [
   { name: "Housing", code: "Housing" },
   { name: "Transportation", code: "Transportation" },
@@ -33,6 +37,86 @@ export const incomeCategories = [
   { name: "Lottery/Gambling", code: "Lottery/Gambling" },
   { name: "Insurance Payout", code: "Insurance Payout" },
 ];
+
+type FormContentType = {
+  intend: string;
+  title: string;
+  TitleIcon: IconType;
+  nameHint: string;
+  categoryName: string;
+  confirmText: string;
+  inProgressText: string;
+};
+
+export const formContent: FormContentType[] = [
+  {
+    intend: "newBudget",
+    title: "Create Budget",
+    TitleIcon: FaMoneyCheckDollar,
+    nameHint: "e.g. November groceries",
+    categoryName: "Budget category",
+    confirmText: "Create",
+    inProgressText: "Creating...",
+  },
+  {
+    intend: "editBudget",
+    title: "Edit Budget",
+    TitleIcon: FaMoneyCheckDollar,
+    nameHint: "e.g. November groceries",
+    categoryName: "Budget category",
+    confirmText: "Edit",
+    inProgressText: "Editing...",
+  },
+  {
+    intend: "newExpense",
+    title: "Add Expense",
+    TitleIcon: GiPayMoney,
+    nameHint: "e.g. vegetables",
+    categoryName: "Budget",
+    confirmText: "Add",
+    inProgressText: "Adding...",
+  },
+  {
+    intend: "newIncome",
+    title: "Add Income",
+    TitleIcon: FaMoneyBill1,
+    nameHint: "e.g. April salary",
+    categoryName: "Income category",
+    confirmText: "Add",
+    inProgressText: "Adding...",
+  },
+];
+
+export const months = [
+  { name: "January", code: "1" },
+  { name: "February", code: "2" },
+  { name: "March", code: "3" },
+  { name: "April", code: "4" },
+  { name: "May", code: "5" },
+  { name: "June", code: "6" },
+  { name: "July", code: "7" },
+  { name: "August", code: "8" },
+  { name: "September", code: "9" },
+  { name: "October", code: "10" },
+  { name: "November", code: "11" },
+  { name: "December", code: "12" },
+];
+
+export const years = [
+  { name: "2023", code: "2023" },
+  { name: "2024", code: "2024" },
+  { name: "2025", code: "2025" },
+  { name: "2026", code: "2026" },
+  { name: "2027", code: "2027" },
+  { name: "2028", code: "2028" },
+  { name: "2029", code: "2029" },
+  { name: "2030", code: "2030" },
+  { name: "2031", code: "2031" },
+  { name: "2032", code: "2032" },
+  { name: "2033", code: "2033" },
+  { name: "2034", code: "2034" },
+];
+
 // export const budgetCategories = [
 //   {name: 'Housing', code: 'HOU'},
 //   {name: 'Transportation', code: 'TRA'},

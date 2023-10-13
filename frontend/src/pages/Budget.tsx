@@ -158,7 +158,6 @@ function BudgetPage(): ReactElement {
     const actionData = manage;
     fetcher.submit(actionData, {
       method: "post",
-      // action: "/auth/signup",
       encType: "application/json",
     });
   };
