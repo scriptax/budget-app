@@ -2,7 +2,6 @@ import { useLoaderData } from "react-router-dom";
 import { toast } from "react-toastify";
 import { ActionFunctionArgs } from "react-router-dom";
 import { ReactElement } from "react";
-import { AxiosError } from "axios";
 
 import { addIncome, deleteIncome, getIncomes } from "../utils/CRUDs";
 import { IncomeData } from "../types/APIDATA";
@@ -10,65 +9,37 @@ import { incomeCategories } from "../data/defaultData";
 import Table from "../components/Table";
 import AddForm from "../components/Form";
 import { PieChart } from "../components/Charts";
+import catchAsync from "../utils/catchAsync";
 
 async function action({ request }: ActionFunctionArgs) {
   const requestData = await request.json();
   const { intend, ...data } = requestData;
+
   if (intend === "newIncome") {
-    try {
+    return catchAsync(async () => {
       const res = await addIncome(data);
       if ((await res.status) === 201) {
         return toast.success("Income added!");
       }
-    } catch (error) {
-      if (error instanceof AxiosError) {
-        if (error.response) {
-          // The server responded with a status code that is not 2xx
-          return toast.error(error.response.data.message);
-        } else {
-          return toast.error("Something went very wrong!");
-        }
-      }
-    }
+    });
   }
   if (intend === "deleteIncome") {
-    try {
+    return catchAsync(async () => {
       const res = await deleteIncome(data.id);
       if ((await res.status) === 204) {
         return toast.success("Income deleted!");
       }
-    } catch (error) {
-      if (error instanceof AxiosError) {
-        if (error.response) {
-          // The server responded with a status code that is not 2xx
-          return toast.error(error.response.data.message);
-        } else {
-          return toast.error("Something went very wrong!");
-        }
-      }
-    }
+    });
   }
 }
 
 async function loader() {
-  try {
+  return catchAsync(async () => {
     const res = await getIncomes();
     if (res.status === 200) {
       return res.data.data.data;
     }
-  } catch (error) {
-    if (error instanceof AxiosError) {
-      if (error.response) {
-        // The server responded with a status code that is not 2xx
-        toast.error(error.response.data.message);
-        return null;
-      } else {
-        // no server response
-        toast.error("There was a problem loading dashboard!");
-        return null;
-      }
-    }
-  }
+  });
 }
 
 function Incomes(): ReactElement {

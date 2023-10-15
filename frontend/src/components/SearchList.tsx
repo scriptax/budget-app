@@ -51,7 +51,6 @@ function SearchList({
   customClass,
   itemPicker,
 }: PropsType): ReactElement {
-  console.log("list name: ", listName)
   const [selected, setSelected] = useState<string>("");
   const [listOpen, setListOpen] = useState<boolean>(false);
   const [searchTerm, setSearchTerm] = useState<string>("");

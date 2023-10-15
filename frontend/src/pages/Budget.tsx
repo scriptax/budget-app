@@ -1,5 +1,4 @@
 import { ReactElement, useState, useEffect } from "react";
-import { AxiosError } from "axios";
 import { toast } from "react-toastify";
 import { FaTrashCan, FaPen, FaCheckToSlot } from "react-icons/fa6";
 import {
@@ -25,26 +24,15 @@ import {
   closeBudget,
   deleteExpense,
 } from "../utils/CRUDs";
+import catchAsync from "../utils/catchAsync";
 
 async function loader({ params }: LoaderFunctionArgs) {
-  try {
+  return catchAsync(async () => {
     const res = await getBudget(params.id!);
     if (res.status === 200) {
       return res.data.data.data;
     }
-  } catch (error) {
-    if (error instanceof AxiosError) {
-      if (error.response) {
-        // The server responded with a status code that is not 2xx
-        toast.error(error.response.data.message);
-        return null;
-      } else {
-        // no server response
-        toast.error("There was a problem loading dashboard!");
-        return null;
-      }
-    }
-  }
+  });
 }
 
 async function action({ params, request }: ActionFunctionArgs) {
@@ -52,91 +40,46 @@ async function action({ params, request }: ActionFunctionArgs) {
   const { intend, ...data } = requestData;
 
   if (intend === "deleteBudget") {
-    try {
+    return catchAsync(async () => {
       const res = await deleteBudget(params.id!);
       if ((await res.status) === 204) {
         toast.success("Budget deleted!");
         return redirect("/dashboard/home");
       }
-    } catch (error) {
-      if (error instanceof AxiosError) {
-        if (error.response) {
-          // The server responded with a status code that is not 2xx
-          return toast.error(error.response.data.message);
-        } else {
-          return toast.error("Something went very wrong!");
-        }
-      }
-    }
+    });
   }
   if (intend === "editBudget") {
-    try {
+    return catchAsync(async () => {
       const res = await editBudget({ ...data, id: params.id });
       if ((await res.status) === 200) {
         return toast.success("Budget Edited!");
       }
-    } catch (error) {
-      if (error instanceof AxiosError) {
-        if (error.response) {
-          // The server responded with a status code that is not 2xx
-          return toast.error(error.response.data.message);
-        } else {
-          return toast.error("Something went very wrong!");
-        }
-      }
-    }
+    });
   }
   if (intend === "closeBudget") {
-    try {
+    return catchAsync(async () => {
       const res = await closeBudget({ close: true, id: params.id! });
       if ((await res.status) === 200) {
         toast.success("Budget Closed!");
         return redirect("/dashboard/home");
       }
-    } catch (error) {
-      if (error instanceof AxiosError) {
-        if (error.response) {
-          // The server responded with a status code that is not 2xx
-          return toast.error(error.response.data.message);
-        } else {
-          return toast.error("Something went very wrong!");
-        }
-      }
-    }
+    });
   }
   if (intend === "newExpense") {
-    try {
+    return catchAsync(async () => {
       const res = await addExpense(data);
       if ((await res.status) === 201) {
         return toast.success("Expense added!");
       }
-    } catch (error) {
-      if (error instanceof AxiosError) {
-        if (error.response) {
-          // The server responded with a status code that is not 2xx
-          return toast.error(error.response.data.message);
-        } else {
-          return toast.error("Something went very wrong!");
-        }
-      }
-    }
+    });
   }
   if (intend === "deleteExpense") {
-    try {
+    return catchAsync(async () => {
       const res = await deleteExpense(data.id);
       if ((await res.status) === 204) {
         return toast.success("Expense deleted!");
       }
-    } catch (error) {
-      if (error instanceof AxiosError) {
-        if (error.response) {
-          // The server responded with a status code that is not 2xx
-          return toast.error(error.response.data.message);
-        } else {
-          return toast.error("Something went very wrong!");
-        }
-      }
-    }
+    });
   }
 }
 

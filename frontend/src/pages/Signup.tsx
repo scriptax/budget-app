@@ -1,6 +1,5 @@
 import { ReactElement, useState } from "react";
 import { toast } from "react-toastify";
-import { AxiosError } from "axios";
 import {
   ActionFunctionArgs,
   redirect,
@@ -11,25 +10,17 @@ import {
 import Input from "../components/Input";
 import Button from "../components/Button";
 import { signup } from "../utils/authentication";
+import catchAsync from "../utils/catchAsync";
 
 async function action({ request }: ActionFunctionArgs) {
-  try {
-    const requestData = request.json();
-    const res = await signup(await requestData);
+  const requestData = await request.json();
+  return catchAsync(async () => {
+    const res = await signup(requestData);
     if (res.status === 201) {
       toast.success(`Welcome, ${res.data.data.user.name}!`);
       return redirect("/dashboard/home");
     }
-  } catch (error) {
-    if (error instanceof AxiosError) {
-      if (error.response) {
-        // The server responded with a status code that is not 2xx
-        return toast.error(error.response.data.message);
-      } else {
-        return toast.error("Something went very wrong!");
-      }
-    }
-  }
+  });
 }
 
 function Signup(): ReactElement {

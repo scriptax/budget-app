@@ -1,6 +1,5 @@
 import { ChangeEvent, ReactElement, useState } from "react";
 import { FaUser, FaKey } from "react-icons/fa6";
-import { AxiosError } from "axios";
 import { toast } from "react-toastify";
 import {
   ActionFunctionArgs,
@@ -13,45 +12,29 @@ import Input from "../components/Input";
 import Button from "../components/Button";
 import { DashboardData } from "../types/APIDATA";
 import { updateData, updatePassword } from "../utils/authentication";
+import catchAsync from "../utils/catchAsync";
 
 async function action({ request }: ActionFunctionArgs) {
   const requestData = await request.json();
   const { intend, ...data } = requestData;
+
   if (intend === "updateData") {
-    try {
+    return catchAsync(async () => {
       const res = await updateData(data);
       if (res.status === 200) {
         toast.success(`Account data updated!`);
         return redirect("/dashboard/home");
       }
-    } catch (error) {
-      if (error instanceof AxiosError) {
-        if (error.response) {
-          // The server responded with a status code that is not 2xx
-          return toast.error(error.response.data.message);
-        } else {
-          return toast.error("Something went very wrong!");
-        }
-      }
-    }
+    });
   }
   if (intend === "updatePassword") {
-    try {
+    return catchAsync(async () => {
       const res = await updatePassword(data);
       if (res.status === 200) {
         toast.success(`Account password updated!`);
         return redirect("/dashboard/home");
       }
-    } catch (error) {
-      if (error instanceof AxiosError) {
-        if (error.response) {
-          // The server responded with a status code that is not 2xx
-          return toast.error(error.response.data.message);
-        } else {
-          return toast.error("Something went very wrong!");
-        }
-      }
-    }
+    });
   }
 }
 

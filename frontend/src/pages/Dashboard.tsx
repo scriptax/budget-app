@@ -1,7 +1,6 @@
 import { ReactElement, useState } from "react";
 import { GiPayMoney } from "react-icons/gi";
 import { toast } from "react-toastify";
-import { AxiosError } from "axios";
 import { useRouteLoaderData, ActionFunctionArgs, Link } from "react-router-dom";
 import {
   FaSackDollar,
@@ -18,61 +17,35 @@ import { addBudget, addExpense, addIncome } from "../utils/CRUDs";
 import { BudgetData, DashboardData } from "../types/APIDATA";
 import AddForm from "../components/Form";
 import { budgetCategories, incomeCategories } from "../data/defaultData";
+import catchAsync from "../utils/catchAsync";
 
 async function action({ request }: ActionFunctionArgs) {
   const requestData = await request.json();
   const { intend, ...data } = requestData;
 
   if (intend === "newBudget") {
-    try {
+    return catchAsync(async () => {
       const res = await addBudget(data);
       if ((await res.status) === 201) {
         return toast.success("Budget created!");
       }
-    } catch (error) {
-      if (error instanceof AxiosError) {
-        if (error.response) {
-          // The server responded with a status code that is not 2xx
-          return toast.error(error.response.data.message);
-        } else {
-          return toast.error("Something went very wrong!");
-        }
-      }
-    }
+    });
   }
   if (intend === "newExpense") {
-    try {
+    return catchAsync(async () => {
       const res = await addExpense(data);
       if ((await res.status) === 201) {
         return toast.success("Expense added!");
       }
-    } catch (error) {
-      if (error instanceof AxiosError) {
-        if (error.response) {
-          // The server responded with a status code that is not 2xx
-          return toast.error(error.response.data.message);
-        } else {
-          return toast.error("Something went very wrong!");
-        }
-      }
-    }
+    });
   }
   if (intend === "newIncome") {
-    try {
+    return catchAsync(async () => {
       const res = await addIncome(data);
       if ((await res.status) === 201) {
         return toast.success("Income added!");
       }
-    } catch (error) {
-      if (error instanceof AxiosError) {
-        if (error.response) {
-          // The server responded with a status code that is not 2xx
-          return toast.error(error.response.data.message);
-        } else {
-          return toast.error("Something went very wrong!");
-        }
-      }
-    }
+    });
   }
 }
 

@@ -1,8 +1,6 @@
 import { ReactElement, useEffect, useState } from "react";
 import { FaChartColumn, FaChartPie } from "react-icons/fa6";
 import { BiSolidReport } from "react-icons/bi";
-import { AxiosError } from "axios";
-import { toast } from "react-toastify";
 import {
   ActionFunctionArgs,
   LoaderFunctionArgs,
@@ -17,28 +15,18 @@ import Button from "../components/Button";
 import { budgetCategories, incomeCategories, years, months } from "../data/defaultData";
 import { getStats } from "../utils/statsRequests";
 import { BarChart, PieChart } from "../components/Charts";
+import catchAsync from "../utils/catchAsync";
 
 async function loader({ request }: LoaderFunctionArgs) {
   const url = new URL(request.url);
   if (!url.search) return null;
-  try {
+
+  return catchAsync(async () => {
     const res = await getStats(request.url);
     if (res.status === 200) {
       return res.data.data.data;
     }
-  } catch (error) {
-    if (error instanceof AxiosError) {
-      if (error.response) {
-        // The server responded with a status code that is not 2xx
-        toast.error(error.response.data.message);
-        return null;
-      } else {
-        // no server response
-        toast.error("There was a problem loading dashboard!");
-        return null;
-      }
-    }
-  }
+  });
 }
 
 async function action({ request }: ActionFunctionArgs) {

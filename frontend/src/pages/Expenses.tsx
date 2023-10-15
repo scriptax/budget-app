@@ -1,7 +1,6 @@
 import { toast } from "react-toastify";
 import { ActionFunctionArgs } from "react-router-dom";
 import { ReactElement } from "react";
-import { AxiosError } from "axios";
 import { useLoaderData, useRouteLoaderData } from "react-router-dom";
 
 import { addExpense, deleteExpense, getExpenses } from "../utils/CRUDs";
@@ -9,65 +8,37 @@ import { DashboardData, ExpenseData } from "../types/APIDATA";
 import Table from "../components/Table";
 import AddForm from "../components/Form";
 import { PieChart } from "../components/Charts";
+import catchAsync from "../utils/catchAsync";
 
 async function action({ request }: ActionFunctionArgs) {
   const requestData = await request.json();
   const { intend, ...data } = requestData;
+
   if (intend === "newExpense") {
-    try {
+    return catchAsync(async () => {
       const res = await addExpense(data);
       if ((await res.status) === 201) {
         return toast.success("Expense added!");
       }
-    } catch (error) {
-      if (error instanceof AxiosError) {
-        if (error.response) {
-          // The server responded with a status code that is not 2xx
-          return toast.error(error.response.data.message);
-        } else {
-          return toast.error("Something went very wrong!");
-        }
-      }
-    }
+    });
   }
   if (intend === "deleteExpense") {
-    try {
+    return catchAsync(async () => {
       const res = await deleteExpense(data.id);
       if ((await res.status) === 204) {
         return toast.success("Expense deleted!");
       }
-    } catch (error) {
-      if (error instanceof AxiosError) {
-        if (error.response) {
-          // The server responded with a status code that is not 2xx
-          return toast.error(error.response.data.message);
-        } else {
-          return toast.error("Something went very wrong!");
-        }
-      }
-    }
+    });
   }
 }
 
 async function loader() {
-  try {
+  return catchAsync(async () => {
     const res = await getExpenses();
     if (res.status === 200) {
       return res.data.data.data;
     }
-  } catch (error) {
-    if (error instanceof AxiosError) {
-      if (error.response) {
-        // The server responded with a status code that is not 2xx
-        toast.error(error.response.data.message);
-        return null;
-      } else {
-        // no server response
-        toast.error("There was a problem loading dashboard!");
-        return null;
-      }
-    }
-  }
+  });
 }
 
 function Expenses(): ReactElement {
