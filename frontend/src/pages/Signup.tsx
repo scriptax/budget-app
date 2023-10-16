@@ -25,6 +25,8 @@ async function action({ request }: ActionFunctionArgs) {
 
 function Signup(): ReactElement {
   const fetcher = useFetcher();
+  const isSubmitting = fetcher.state === "submitting";
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -103,7 +105,7 @@ function Signup(): ReactElement {
         </span>
         <Button
           accent="blue"
-          text="Create account"
+          text={isSubmitting ? "Creating account..." : "Create account"}
           type="submit"
           customClasses="w-full my-3"
         />

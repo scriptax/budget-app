@@ -25,6 +25,8 @@ async function action({ request }: ActionFunctionArgs) {
 
 function Login(): ReactElement {
   const fetcher = useFetcher();
+  const isSubmitting = fetcher.state === "submitting";
+
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -70,7 +72,7 @@ function Login(): ReactElement {
         />
         <Button
           accent="blue"
-          text="Log in"
+          text={isSubmitting ? "Logging in..." : "Log in"}
           type="submit"
           customClasses="w-full my-5"
         />
