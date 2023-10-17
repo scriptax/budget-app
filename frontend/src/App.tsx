@@ -32,7 +32,7 @@ import Stats, {
   loader as statsLoader,
 } from "./pages/Stats";
 import { action as dashboardAction } from "./pages/Dashboard";
-import logoutAction from "./actions/logout";
+import logoutLoader from "./actions/logout";
 import Incomes from "./pages/Incomes";
 // import Error from "./pages/Error";
 
@@ -72,7 +72,7 @@ const router = createBrowserRouter(
           loader={statsLoader}
         />
         <Route path="account" element={<Account />} action={accountAction} />
-        <Route path="logout" loader={logoutAction} />
+        <Route path="logout" loader={logoutLoader} />
       </Route>
       <Route path="auth" element={<AuthLayout />}>
         <Route path="login" element={<Login />} action={loginAction} />
