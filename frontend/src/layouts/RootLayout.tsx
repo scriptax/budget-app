@@ -1,5 +1,5 @@
-import { ReactElement } from "react";
-import { Outlet, Navigate, useLoaderData } from "react-router-dom";
+import { ReactElement, useEffect } from "react";
+import { Outlet, Navigate, useLoaderData, useLocation, useRevalidator } from "react-router-dom";
 
 import { getDashboard } from "../utils/authentication";
 import catchAsync from "../utils/catchAsync";
@@ -15,6 +15,15 @@ async function loader() {
 
 function RootLayout(): ReactElement {
   const dashboard = useLoaderData();
+  const location = useLocation();
+  const revalidator = useRevalidator();
+
+  useEffect(() => {
+    if (location.pathname === "/dashboard/home") {
+      revalidator.revalidate();
+    }
+  }, [location.pathname]);
+
   return (
     <div className="font-primary">
       <Outlet />
