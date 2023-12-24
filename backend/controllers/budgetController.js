@@ -3,6 +3,7 @@ const CustomError = require("./../utils/customError");
 
 const Budget = require("./../models/budgetModel");
 const Expense = require("../models/expenseModel");
+const User = require("../models/userModel");
 
 exports.appendUserIds = (req, res, next) => {
   if (!req.body.user) req.body.user = req.user.id;
@@ -90,11 +91,21 @@ exports.closeBudget = catchAsync(async (req, res, next) => {
 });
 
 exports.deleteBudget = catchAsync(async (req, res, next) => {
-  const budget = await Budget.findByIdAndDelete(req.params.id);
+
+  const budget = await Budget.findById(req.params.id).populate({
+    path: "expenses",
+  });
 
   if (!budget) {
     return next(new CustomError("No item found with this id.", 404));
   }
+
+  const expenseSum = budget.expenses.reduce((acc, next) => acc + next.amount, 0);
+
+  // use transaction
+  await User.findByIdAndUpdate(req.body.user, { $inc: { currentBalance: expenseSum} });
+  
+  await Budget.findByIdAndDelete(req.params.id);
 
   await Expense.deleteMany({ budget: { $in: budget._id } });
 
