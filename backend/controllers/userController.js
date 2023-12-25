@@ -4,6 +4,8 @@ const catchAsync = require("./../utils/catchAsync");
 const CustomError = require("./../utils/customError");
 const User = require("./../models/userModel");
 const Budget = require("./../models/budgetModel");
+const Expense = require("../models/expenseModel");
+const Income = require("../models/incomeModel");
 
 exports.getDashboard = catchAsync(async (req, res, next) => {
   // const user = await User.findById(req.user.id)
@@ -111,7 +113,15 @@ exports.updateAccount = catchAsync(async (req, res, next) => {
 });
 
 exports.deleteAccount = catchAsync(async (req, res, next) => {
-  await User.findByIdAndUpdate(req.user.id, { active: false });
+  const session = await mongoose.startSession();
+  session.startTransaction();
+
+  await Expense.deleteMany({ user: req.user.id }, {session});
+  await Income.deleteMany({ user: req.user.id }, {session});
+  await Budget.deleteMany({ user: req.user.id }, {session});
+  await User.findByIdAndDelete(req.user.id, {session});
+
+  await session.commitTransaction();
 
   res.status(204).json({
     status: "success",
