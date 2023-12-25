@@ -1,6 +1,6 @@
 import { ReactElement, useState, useEffect } from "react";
 import { toast } from "react-toastify";
-import { FaTrashCan, FaPen, FaCheckToSlot } from "react-icons/fa6";
+import { FaTrashCan, FaPen, FaCheckToSlot, FaXmark } from "react-icons/fa6";
 import {
   ActionFunctionArgs,
   LoaderFunctionArgs,
@@ -104,7 +104,6 @@ function BudgetPage(): ReactElement {
   const budgetData = useLoaderData() as BudgetWithExpenseData;
 
   if (!budgetData) {
-    console.log("Throwing error!!");
     throw new Response("", {
       status: 404,
       statusText: "Not Found",
@@ -145,6 +144,7 @@ function BudgetPage(): ReactElement {
             amount={budgetData.amount}
             category={budgetData.category}
             spent={budgetData.spent}
+            setAt={budgetData.setAt}
           />
           <Button
             accent="slate"
@@ -192,6 +192,7 @@ function BudgetPage(): ReactElement {
         <div className="w-full sm:w-1/2 lg:w-2/5 m-1 bg-white p-4 border border-stone-200 rounded-md">
           <AddForm
             intend="newExpense"
+            prevCategory={{ code: budgetData._id, name: budgetData.name }}
             categoryItems={[{ name: budgetData.name, code: budgetData._id }]}
           />
         </div>
@@ -226,6 +227,14 @@ function BudgetPage(): ReactElement {
       {manage.intend === "editBudget" && (
         <div className="absolute left-0 top-0 w-full h-full z-10 bg-[#0006]">
           <div className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-11/12 md:w-1/2 lg:w-1/3 p-5 rounded-md bg-white">
+            <button
+              className="absolute right-2 top-2 w-10 h-10 rounded-3xl grid place-content-center hover:bg-slate-200"
+              onClick={() => {
+                setManage((prev) => ({ ...prev, intend: "" }));
+              }}
+            >
+              <FaXmark size={20} />
+            </button>
             <AddForm
               prevName={budgetData.name}
               prevAmount={budgetData.amount}

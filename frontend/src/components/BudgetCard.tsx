@@ -1,4 +1,5 @@
 import { ReactElement } from "react";
+import { FaTriangleExclamation } from "react-icons/fa6";
 
 type BudgetBarType = {
   customClasses?: string;
@@ -10,18 +11,32 @@ const BudgetBar = ({
   spent,
   remaining,
 }: BudgetBarType): ReactElement => {
+  const moneyExists = remaining >= 0;
   return (
     <div className="w-20 min-h-full text-center">
       <div
-        className={`w-1/2 h-4/6 rounded-md relative mx-auto ${customClasses}`}
+        className={`w-1/2 h-4/6 max-h-4/6 rounded-md relative mx-auto ${customClasses}`}
       >
-        <div
-          className="absolute left-0 bottom-0 w-full rounded-md bg-slate-800"
-          style={{ height: `${(remaining * 100) / (spent + remaining)}%` }}
-        ></div>
+        {moneyExists ? (
+          <div
+            className="absolute left-0 bottom-0 w-full rounded-md bg-slate-800"
+            style={{ height: `${(remaining * 100) / (spent + remaining)}%` }}
+          ></div>
+        ) : (
+          <FaTriangleExclamation
+            size={20}
+            className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
+          />
+        )}
       </div>
-      <div className="w-full text-xs text-center mt-2">
-        {Math.round((remaining * 100) / (spent + remaining))}% Remaining
+      <div
+        className={`w-full text-xs text-center mt-2 ${
+          !moneyExists && "text-red-700"
+        }`}
+      >
+        {moneyExists
+          ? `${Math.round((remaining * 100) / (spent + remaining))} % Remaining`
+          : `$${remaining * -1} Overbudget`}
       </div>
     </div>
   );
@@ -32,12 +47,14 @@ type BudgetCardType = {
   category: string;
   amount: number;
   spent: number;
+  setAt?: string;
 };
 function BudgetCard({
   name,
   category,
   amount,
   spent,
+  setAt,
 }: BudgetCardType): ReactElement {
   return (
     <div className="p-3 flex w-full">
@@ -53,9 +70,15 @@ function BudgetCard({
         <div className="my-1">
           <span className="font-bold">Spent: </span>${spent}
         </div>
+        {setAt && (
+          <div className="my-1">
+            <span className="font-bold">Date created: </span>
+            {new Date(setAt).toLocaleDateString()}
+          </div>
+        )}
       </div>
       <BudgetBar
-        customClasses="bg-slate-300"
+        customClasses={spent < amount ? "bg-slate-300" : "bg-red-200"}
         spent={spent}
         remaining={amount - spent}
       />

@@ -18,7 +18,7 @@ function ConfirmModal({
   cancel,
 }: PropsType): ReactElement {
   return (
-    <div className="absolute left-0 top-0 w-full h-full z-10 bg-[#0006]">
+    <div className="fixed left-0 top-0 w-full h-full z-10 bg-[#0006]">
       <div className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-10/12 md:w-1/2 lg:w-1/3 p-5 rounded-md bg-white text-center">
         <div className="mb-4">
           <FaTriangleExclamation

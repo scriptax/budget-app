@@ -23,9 +23,7 @@ function AddForm({
   const fetcher = useFetcher();
   const isSubmitting = fetcher.state === "submitting";
 
-  const content = formContent.find(
-    (elem) => elem.intend === intend,
-  )!;
+  const content = formContent.find((elem) => elem.intend === intend)!;
   const [formData, setFormData] = useState({
     name: prevName || "",
     amount: prevAmount || 0,
@@ -85,12 +83,12 @@ function AddForm({
             type="number"
             value={formData.amount}
             changeHandler={changeHandler}
-            customClass="w-5/12 mt-3 float-left"
+            customClass="w-5/12 mt-3"
           />
           <SearchList
             title={content.categoryName}
             name="category"
-            customClass="mt-3 w-6/12 float-right"
+            customClass="mt-3 w-6/12"
             items={categoryItems}
             listName={formData.category.name}
             itemPicker={listItemPicker}

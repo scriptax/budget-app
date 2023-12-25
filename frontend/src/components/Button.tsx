@@ -34,8 +34,10 @@ function Button({
       onClick={onClick}
       className={`border-0 outline-none px-4 py-2 ${colorAccents[accentKey]} ${customClasses} text-white rounded-md cursor-pointer active:scale-95 transition-transform duration-100 text-md hover:opacity-95`}
     >
-      <span className="mr-2 text-white">{text}</span>
-      {Icon && <span className="inline-block m-auto">{<Icon />}</span>}
+      <div className="flex items-center justify-center">
+        <span className="mr-2 text-white">{text}</span>
+        {Icon && <span>{<Icon />}</span>}
+      </div>
     </button>
   );
 }
