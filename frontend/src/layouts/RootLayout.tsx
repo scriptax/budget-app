@@ -1,5 +1,11 @@
 import { ReactElement, useEffect } from "react";
-import { Outlet, Navigate, useLoaderData, useLocation, useRevalidator } from "react-router-dom";
+import {
+  Outlet,
+  Navigate,
+  useLoaderData,
+  useLocation,
+  useRevalidator,
+} from "react-router-dom";
 
 import { getDashboard } from "../utils/authentication";
 import catchAsync from "../utils/catchAsync";
@@ -30,7 +36,7 @@ function RootLayout(): ReactElement {
       {dashboard ? (
         <Navigate to="/dashboard/home" replace />
       ) : (
-        <Navigate to="/auth/signup" replace />
+        <Navigate to="/auth/login" replace />
       )}
     </div>
   );

@@ -5,25 +5,32 @@ import {
   redirect,
   Link,
   useFetcher,
+  useRouteLoaderData,
+  Navigate,
 } from "react-router-dom";
 
 import Input from "../components/Input";
 import Button from "../components/Button";
 import { signup } from "../utils/authentication";
 import catchAsync from "../utils/catchAsync";
+import { DashboardData } from "../types/APIDATA";
 
 async function action({ request }: ActionFunctionArgs) {
   const requestData = await request.json();
-  return catchAsync(async () => {
-    const res = await signup(requestData);
-    if (res.status === 201) {
-      toast.success(`Welcome, ${res.data.data.user.name}!`);
-      return redirect("/dashboard/home");
-    }
-  });
+  return catchAsync(
+    async () => {
+      const res = await signup(requestData);
+      if (res.status === 201) {
+        toast.success(`Welcome, ${res.data.data.user.name}!`);
+        return redirect("/dashboard/home");
+      }
+    },
+    { showToast: true },
+  );
 }
 
 function Signup(): ReactElement {
+  const dashboard = useRouteLoaderData("root") as DashboardData;
   const fetcher = useFetcher();
   const isSubmitting = fetcher.state === "submitting";
 
@@ -34,6 +41,10 @@ function Signup(): ReactElement {
     currentBalance: 0,
     preferredCurrency: "USD",
   });
+
+  if (dashboard) {
+    return <Navigate to="/dashboard/home" />;
+  }
 
   const changeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     let name = e.target.name;

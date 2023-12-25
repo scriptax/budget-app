@@ -1,7 +1,12 @@
 import { ReactElement, useState } from "react";
 import { GiPayMoney } from "react-icons/gi";
 import { toast } from "react-toastify";
-import { useRouteLoaderData, ActionFunctionArgs, Link, Navigate } from "react-router-dom";
+import {
+  useRouteLoaderData,
+  ActionFunctionArgs,
+  Link,
+  Navigate,
+} from "react-router-dom";
 import {
   FaSackDollar,
   FaMoneyBill1,
@@ -24,28 +29,37 @@ async function action({ request }: ActionFunctionArgs) {
   const { intend, ...data } = requestData;
 
   if (intend === "newBudget") {
-    return catchAsync(async () => {
-      const res = await addBudget(data);
-      if ((await res.status) === 201) {
-        return toast.success("Budget created!");
-      }
-    });
+    return catchAsync(
+      async () => {
+        const res = await addBudget(data);
+        if ((await res.status) === 201) {
+          return toast.success("Budget created!");
+        }
+      },
+      { showToast: true },
+    );
   }
   if (intend === "newExpense") {
-    return catchAsync(async () => {
-      const res = await addExpense(data);
-      if ((await res.status) === 201) {
-        return toast.success("Expense added!");
-      }
-    });
+    return catchAsync(
+      async () => {
+        const res = await addExpense(data);
+        if ((await res.status) === 201) {
+          return toast.success("Expense added!");
+        }
+      },
+      { showToast: true },
+    );
   }
   if (intend === "newIncome") {
-    return catchAsync(async () => {
-      const res = await addIncome(data);
-      if ((await res.status) === 201) {
-        return toast.success("Income added!");
-      }
-    });
+    return catchAsync(
+      async () => {
+        const res = await addIncome(data);
+        if ((await res.status) === 201) {
+          return toast.success("Income added!");
+        }
+      },
+      { showToast: true },
+    );
   }
 }
 
@@ -136,55 +150,64 @@ function FormLayer({ budgets }: FormLayerPropsTypes): ReactElement {
 
 function Dashboard() {
   const dashboard = useRouteLoaderData("root") as DashboardData;
-  console.log("dashboard is: ", dashboard)
+  console.log("dashboard is: ", dashboard);
 
   return (
-    <>{dashboard ?
-      <section className="p-4 w-full h-full relative min-h-screen scrollbar">
-        <div className="grid grid-cols-2 md:grid-cols-4 mb-5">
-          <SummaryCard
-            Icon={FaSackDollar}
-            title="Current Balance"
-            text={`$${dashboard.currentBalance}`}
-            customClasses="bg-slate-800"
-          />
-          <SummaryCard
-            Icon={FaMoneyCheckDollar}
-            title="Total Budgeted"
-            text={`$${dashboard.budgets.reduce(
-              (acc, { amount }) => acc + amount,
-              0,
-            )}`}
-            customClasses="bg-blue-500"
-          />
-          <SummaryCard
-            Icon={GiPayMoney}
-            title="Last month's expense"
-            text={`$${dashboard.totalExpense}`}
-            customClasses="bg-orange-500"
-          />
-          <SummaryCard
-            Icon={FaMoneyBill1}
-            title="Last month's income"
-            text={`$${dashboard.totalIncome}`}
-            customClasses="bg-emerald-700"
-          />
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-          {dashboard.budgets.map(({ name, category, amount, spent, _id }, index) => (
-            <Link to={`budget/${_id}`} className="m-1 bg-white rounded-lg border border-stone-200 shadow-md block hover:-translate-y-1 transition-transform cursor-pointer">
-              <BudgetCard
-                key={index}
-                name={name}
-                category={category}
-                amount={amount}
-                spent={spent ?? 0}
-              />
-            </Link>
-          ))}
-        </div>
-        <FormLayer budgets={dashboard.budgets} />
-      </section> : <Navigate to="/auth/login" />}
+    <>
+      {dashboard ? (
+        <section className="p-4 w-full h-full relative min-h-screen scrollbar">
+          <div className="grid grid-cols-2 md:grid-cols-4 mb-5">
+            <SummaryCard
+              Icon={FaSackDollar}
+              title="Current Balance"
+              text={`$${dashboard.currentBalance}`}
+              customClasses="bg-slate-800"
+            />
+            <SummaryCard
+              Icon={FaMoneyCheckDollar}
+              title="Total Budgeted"
+              text={`$${dashboard.budgets.reduce(
+                (acc, { amount }) => acc + amount,
+                0,
+              )}`}
+              customClasses="bg-blue-500"
+            />
+            <SummaryCard
+              Icon={GiPayMoney}
+              title="Last month's expense"
+              text={`$${dashboard.totalExpense}`}
+              customClasses="bg-orange-500"
+            />
+            <SummaryCard
+              Icon={FaMoneyBill1}
+              title="Last month's income"
+              text={`$${dashboard.totalIncome}`}
+              customClasses="bg-emerald-700"
+            />
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+            {dashboard.budgets.map(
+              ({ name, category, amount, spent, _id }, index) => (
+                <Link
+                  to={`budget/${_id}`}
+                  className="m-1 bg-white rounded-lg border border-stone-200 shadow-md block hover:-translate-y-1 transition-transform cursor-pointer"
+                >
+                  <BudgetCard
+                    key={index}
+                    name={name}
+                    category={category}
+                    amount={amount}
+                    spent={spent ?? 0}
+                  />
+                </Link>
+              ),
+            )}
+          </div>
+          <FormLayer budgets={dashboard.budgets} />
+        </section>
+      ) : (
+        <Navigate to="/auth/login" />
+      )}
     </>
   );
 }

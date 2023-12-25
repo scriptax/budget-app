@@ -31,6 +31,8 @@ async function loader({ params }: LoaderFunctionArgs) {
     const res = await getBudget(params.id!);
     if (res.status === 200) {
       return res.data.data.data;
+    } else {
+      return null;
     }
   });
 }
@@ -40,51 +42,74 @@ async function action({ params, request }: ActionFunctionArgs) {
   const { intend, ...data } = requestData;
 
   if (intend === "deleteBudget") {
-    return catchAsync(async () => {
-      const res = await deleteBudget(params.id!);
-      if ((await res.status) === 204) {
-        toast.success("Budget deleted!");
-        return redirect("/dashboard/home");
-      }
-    });
+    return catchAsync(
+      async () => {
+        const res = await deleteBudget(params.id!);
+        if ((await res.status) === 204) {
+          toast.success("Budget deleted!");
+          return redirect("/dashboard/home");
+        }
+      },
+      { showToast: true },
+    );
   }
   if (intend === "editBudget") {
-    return catchAsync(async () => {
-      const res = await editBudget({ ...data, id: params.id });
-      if ((await res.status) === 200) {
-        return toast.success("Budget Edited!");
-      }
-    });
+    return catchAsync(
+      async () => {
+        const res = await editBudget({ ...data, id: params.id });
+        if ((await res.status) === 200) {
+          return toast.success("Budget Edited!");
+        }
+      },
+      { showToast: true },
+    );
   }
   if (intend === "closeBudget") {
-    return catchAsync(async () => {
-      const res = await closeBudget({ close: true, id: params.id! });
-      if ((await res.status) === 200) {
-        toast.success("Budget Closed!");
-        return redirect("/dashboard/home");
-      }
-    });
+    return catchAsync(
+      async () => {
+        const res = await closeBudget({ close: true, id: params.id! });
+        if ((await res.status) === 200) {
+          toast.success("Budget Closed!");
+          return redirect("/dashboard/home");
+        }
+      },
+      { showToast: true },
+    );
   }
   if (intend === "newExpense") {
-    return catchAsync(async () => {
-      const res = await addExpense(data);
-      if ((await res.status) === 201) {
-        return toast.success("Expense added!");
-      }
-    });
+    return catchAsync(
+      async () => {
+        const res = await addExpense(data);
+        if ((await res.status) === 201) {
+          return toast.success("Expense added!");
+        }
+      },
+      { showToast: true },
+    );
   }
   if (intend === "deleteExpense") {
-    return catchAsync(async () => {
-      const res = await deleteExpense(data.id);
-      if ((await res.status) === 204) {
-        return toast.success("Expense deleted!");
-      }
-    });
+    return catchAsync(
+      async () => {
+        const res = await deleteExpense(data.id);
+        if ((await res.status) === 204) {
+          return toast.success("Expense deleted!");
+        }
+      },
+      { showToast: true },
+    );
   }
 }
 
 function BudgetPage(): ReactElement {
   const budgetData = useLoaderData() as BudgetWithExpenseData;
+
+  if (!budgetData) {
+    console.log("Throwing error!!");
+    throw new Response("", {
+      status: 404,
+      statusText: "Not Found",
+    });
+  }
 
   const [manage, setManage] = useState({
     intend: "",
@@ -110,6 +135,7 @@ function BudgetPage(): ReactElement {
       setManage((prev) => ({ ...prev, intend: "" }));
     }
   }, [isSubmitting]);
+
   return (
     <div className="w-full min-h-screen p-3 mx-auto relative">
       <div className="w-full flex flex-col sm:flex-row justify-around items-center sm:items-stretch">
@@ -185,25 +211,28 @@ function BudgetPage(): ReactElement {
       )}
       {(manage.intend === "closeBudget" ||
         manage.intend === "deleteBudget") && (
-          <ConfirmModal
-            message={manage.message}
-            confirmAccent={manage.confirmAccent}
-            confirmText={
-              isSubmitting ? manage.inProgressText : manage.confirmText
-            }
-            proceed={submitHandler}
-            cancel={() => {
-              setManage((prev) => ({ ...prev, intend: "" }));
-            }}
-          />
-        )}
+        <ConfirmModal
+          message={manage.message}
+          confirmAccent={manage.confirmAccent}
+          confirmText={
+            isSubmitting ? manage.inProgressText : manage.confirmText
+          }
+          proceed={submitHandler}
+          cancel={() => {
+            setManage((prev) => ({ ...prev, intend: "" }));
+          }}
+        />
+      )}
       {manage.intend === "editBudget" && (
         <div className="absolute left-0 top-0 w-full h-full z-10 bg-[#0006]">
           <div className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-11/12 md:w-1/2 lg:w-1/3 p-5 rounded-md bg-white">
             <AddForm
               prevName={budgetData.name}
               prevAmount={budgetData.amount}
-              prevCategory={{ name: budgetData.category, code: budgetData.category }}
+              prevCategory={{
+                name: budgetData.category,
+                code: budgetData.category,
+              }}
               categoryItems={budgetCategories}
               intend="editBudget"
             />

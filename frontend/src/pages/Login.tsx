@@ -5,25 +5,32 @@ import {
   redirect,
   useFetcher,
   ActionFunctionArgs,
+  useRouteLoaderData,
+  Navigate,
 } from "react-router-dom";
 
 import Input from "../components/Input";
 import Button from "../components/Button";
 import { login } from "./../utils/authentication";
 import catchAsync from "../utils/catchAsync";
+import { DashboardData } from "../types/APIDATA";
 
 async function action({ request }: ActionFunctionArgs) {
   const requestData = await request.json();
-  return catchAsync(async () => {
-    const res = await login(requestData);
-    if (res.status === 200) {
-      toast.success(`Welcome, ${res.data.data.user.name}!`);
-      return redirect("/dashboard/home");
-    }
-  });
+  return catchAsync(
+    async () => {
+      const res = await login(requestData);
+      if (res.status === 200) {
+        toast.success(`Welcome, ${res.data.data.user.name}!`);
+        return redirect("/dashboard/home");
+      }
+    },
+    { showToast: true },
+  );
 }
 
 function Login(): ReactElement {
+  const dashboard = useRouteLoaderData("root") as DashboardData;
   const fetcher = useFetcher();
   const isSubmitting = fetcher.state === "submitting";
 
@@ -31,6 +38,11 @@ function Login(): ReactElement {
     email: "",
     password: "",
   });
+
+  if (dashboard) {
+    return <Navigate to="/dashboard/home" />;
+  }
+
   const changeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     let name = e.target.name;
     let value = e.target.value;

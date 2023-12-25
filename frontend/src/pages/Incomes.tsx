@@ -16,20 +16,26 @@ async function action({ request }: ActionFunctionArgs) {
   const { intend, ...data } = requestData;
 
   if (intend === "newIncome") {
-    return catchAsync(async () => {
-      const res = await addIncome(data);
-      if ((await res.status) === 201) {
-        return toast.success("Income added!");
-      }
-    });
+    return catchAsync(
+      async () => {
+        const res = await addIncome(data);
+        if ((await res.status) === 201) {
+          return toast.success("Income added!");
+        }
+      },
+      { showToast: true },
+    );
   }
   if (intend === "deleteIncome") {
-    return catchAsync(async () => {
-      const res = await deleteIncome(data.id);
-      if ((await res.status) === 204) {
-        return toast.success("Income deleted!");
-      }
-    });
+    return catchAsync(
+      async () => {
+        const res = await deleteIncome(data.id);
+        if ((await res.status) === 204) {
+          return toast.success("Income deleted!");
+        }
+      },
+      { showToast: true },
+    );
   }
 }
 

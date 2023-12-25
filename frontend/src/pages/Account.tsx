@@ -19,22 +19,28 @@ async function action({ request }: ActionFunctionArgs) {
   const { intend, ...data } = requestData;
 
   if (intend === "updateData") {
-    return catchAsync(async () => {
-      const res = await updateData(data);
-      if (res.status === 200) {
-        toast.success(`Account data updated!`);
-        return redirect("/dashboard/home");
-      }
-    });
+    return catchAsync(
+      async () => {
+        const res = await updateData(data);
+        if (res.status === 200) {
+          toast.success(`Account data updated!`);
+          return redirect("/dashboard/home");
+        }
+      },
+      { showToast: true },
+    );
   }
   if (intend === "updatePassword") {
-    return catchAsync(async () => {
-      const res = await updatePassword(data);
-      if (res.status === 200) {
-        toast.success(`Account password updated!`);
-        return redirect("/dashboard/home");
-      }
-    });
+    return catchAsync(
+      async () => {
+        const res = await updatePassword(data);
+        if (res.status === 200) {
+          toast.success(`Account password updated!`);
+          return redirect("/dashboard/home");
+        }
+      },
+      { showToast: true },
+    );
   }
 }
 

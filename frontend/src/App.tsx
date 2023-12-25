@@ -34,14 +34,14 @@ import Stats, {
 import { action as dashboardAction } from "./pages/Dashboard";
 import logoutLoader from "./actions/logout";
 import Incomes from "./pages/Incomes";
-// import Error from "./pages/Error";
+import Error from "./pages/Error";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route
       path="/"
       element={<RootLayout />}
-      // errorElement={<Error />}
+      errorElement={<Error />}
       id="root"
       loader={rootLoader}
     >
@@ -88,7 +88,7 @@ function App() {
       <RouterProvider router={router} />
       <ToastContainer
         position="top-center"
-        autoClose={4000}
+        autoClose={2500}
         hideProgressBar={false}
         newestOnTop={false}
         closeOnClick

@@ -15,20 +15,26 @@ async function action({ request }: ActionFunctionArgs) {
   const { intend, ...data } = requestData;
 
   if (intend === "newExpense") {
-    return catchAsync(async () => {
-      const res = await addExpense(data);
-      if ((await res.status) === 201) {
-        return toast.success("Expense added!");
-      }
-    });
+    return catchAsync(
+      async () => {
+        const res = await addExpense(data);
+        if ((await res.status) === 201) {
+          return toast.success("Expense added!");
+        }
+      },
+      { showToast: true },
+    );
   }
   if (intend === "deleteExpense") {
-    return catchAsync(async () => {
-      const res = await deleteExpense(data.id);
-      if ((await res.status) === 204) {
-        return toast.success("Expense deleted!");
-      }
-    });
+    return catchAsync(
+      async () => {
+        const res = await deleteExpense(data.id);
+        if ((await res.status) === 204) {
+          return toast.success("Expense deleted!");
+        }
+      },
+      { showToast: true },
+    );
   }
 }
 
