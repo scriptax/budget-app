@@ -119,6 +119,16 @@ async function updatePassword({
   return res;
 }
 
+async function deleteAccount() {
+  const res = await axios({
+    method: "DELETE",
+    url: `${apiDomain}/api/v1/users/deleteAccount`,
+    withCredentials: true,
+    data: {},
+  });
+  return res;
+}
+
 export {
   test,
   getDashboard,
@@ -127,4 +137,5 @@ export {
   signup,
   updateData,
   updatePassword,
+  deleteAccount,
 };
