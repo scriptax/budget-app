@@ -15,11 +15,11 @@ const BudgetBar = ({
   return (
     <div className="w-20 min-h-full text-center">
       <div
-        className={`w-1/2 h-4/6 max-h-4/6 rounded-md relative mx-auto ${customClasses}`}
+        className={`w-1/2 h-4/6 max-h-4/6 rounded-md relative mx-auto overflow-hidden ${customClasses}`}
       >
         {moneyExists ? (
           <div
-            className="absolute left-0 bottom-0 w-full rounded-md bg-slate-800"
+            className="absolute left-0 bottom-0 w-full bg-slate-800"
             style={{ height: `${(remaining * 100) / (spent + remaining)}%` }}
           ></div>
         ) : (

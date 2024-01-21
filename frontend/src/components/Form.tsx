@@ -5,6 +5,7 @@ import Input from "./Input";
 import Button from "./Button";
 import SearchList, { ListItemsType } from "./SearchList";
 import { formContent } from "../data/defaultData";
+import { toast } from "react-toastify";
 
 type FormProps = {
   intend: "newBudget" | "editBudget" | "newExpense" | "newIncome";
@@ -52,10 +53,15 @@ function AddForm({
       return { ...prev, [name]: item };
     });
   };
-  const submitHandler = (e: React.FormEvent): void => {
+  const submitHandler = (e: React.FormEvent) => {
     e.preventDefault();
 
     const actionData = { ...formData, intend };
+
+    if (!formData.category.code) {
+      return toast.warning("Choose a category / budget");
+    }
+
     fetcher.submit(actionData, {
       method: "post",
       encType: "application/json",
