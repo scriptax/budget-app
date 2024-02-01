@@ -69,10 +69,7 @@ const TableBodyRow = ({
             }}
           >
             <FaRegTrashCan className="inline-block" size={15} />
-            <span className="text-sm">
-              {" "}
-              {isSubmitting ? "..." : ""}
-            </span>
+            <span className="text-sm"> {isSubmitting ? "..." : ""}</span>
           </button>
         </td>
       )}
@@ -96,7 +93,7 @@ function Table({
 }: PropsType): ReactElement {
   return (
     <div className="w-full">
-      <table className="w-full border-slate-600">
+      <table className="w-full border-slate-600 rounded-md overflow-hidden">
         <thead className="bg-slate-800 text-white text-xs sm:text-sm border-collapse table-auto">
           <tr>
             {[
@@ -121,8 +118,10 @@ function Table({
             let rowData = arr[arr.length - index - 1];
             let category = categories.find((item) =>
               tableType === "expense"
-                ? "budget" in rowData && (rowData as ExpenseData).budget === item.code
-                : "category" in rowData && (rowData as IncomeData).category === item.name,
+                ? "budget" in rowData &&
+                  (rowData as ExpenseData).budget === item.code
+                : "category" in rowData &&
+                  (rowData as IncomeData).category === item.name,
             );
             return (
               <tr className="text-center odd:bg-slate-200 hover:bg-orange-100 ">

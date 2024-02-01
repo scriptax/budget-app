@@ -38,9 +38,9 @@ type LinkType = {
 };
 const linkStyles = {
   active:
-    "text-slate-100 px-5 py-3 text-lg block w-full hover:bg-slate-900 my-4 border-r-4 border-blue-600 bg-slate-900",
+    "text-slate-100 px-5 py-3 text-lg block w-[95%] rounded-md m-auto hover:bg-slate-900 my-4 border-r-4 border-blue-600 bg-slate-900",
   notActive:
-    "text-slate-300 px-5 py-3 text-lg block w-full hover:bg-slate-900 my-4",
+    "text-slate-300 px-5 py-3 text-lg block w-[95%] rounded-md m-auto hover:bg-slate-900 my-4",
 };
 const Link = ({ text, path, Icon, onClick }: LinkType): ReactElement => {
   return (
